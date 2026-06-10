@@ -191,5 +191,6 @@ ffprobe -v error \
 - 不要直接提交 `.env.local`、cookies、token、模型权重或生成视频。
 - 遇到需要大模型判断的高光选段时，Codex 自己阅读 transcript 和 prompt 后写 plan。
 - 视频翻译优先使用 `--backend logiccut-local`，Codex 自己阅读 prompt 并写 `translated_segments.json`。
-- 如果需要配音，再切换到外部 `video-translate-refine` 或 TTS 服务，并先用 `--dry-run` 固定命令和参数。
+- 如果需要配音，再切换到外部 `video-translate-refine` 或 TTS 服务；本地小机器优先推荐 `--tts-engine rgad-tts`，对应仓库是 https://github.com/piedpiperG/rgad-crosslingual-tts。
+- 不要提交 RGAD / ASR / pyannote 等模型权重。Codex 只记录 GitHub、Hugging Face 来源和本机路径。
 - 如果评论截图被平台限制，说明需要 cookies，而不是假装已抓全。

@@ -68,6 +68,12 @@ def build_translation_setup_plan(*, profile: str = "minimal", install: bool = Fa
             {"name": "Fish Speech", "github": "https://github.com/fishaudio/fish-speech"},
             {"name": "IndexTTS2", "github": "https://github.com/index-tts/index-tts", "huggingface": "https://huggingface.co/IndexTeam/IndexTTS-2"},
             {"name": "OmniVoice", "github": "https://github.com/k2-fsa/OmniVoice", "huggingface": "https://huggingface.co/k2-fsa/OmniVoice"},
+            {
+                "name": "RGAD Cross-Lingual TTS",
+                "github": "https://github.com/piedpiperG/rgad-crosslingual-tts",
+                "huggingface": "https://huggingface.co/isabeth/rgad-crosslingual-tts",
+                "recommended_for": "lightweight local cross-language TTS on small machines, especially foreign-to-Chinese voice cloning",
+            },
         ],
         "install_commands": commands,
         "checks": _checks(profile),

@@ -26,11 +26,16 @@ ALIASES = {
     "omni": "omnivoice",
     "omni-voice": "omnivoice",
     "omni_voice": "omnivoice",
+    "rgad": "rgad-tts",
+    "rgad-crosslingual": "rgad-tts",
+    "rgad-crosslingual-tts": "rgad-tts",
+    "rgadtts": "rgad-tts",
+    "rgad_tts": "rgad-tts",
 }
 
 
 def normalize_tts_engine(engine: str | None) -> str:
-    value = str(engine or "fishaudio").strip().lower().replace("_", "-")
+    value = str(engine or "rgad-tts").strip().lower().replace("_", "-")
     return ALIASES.get(value, value)
 
 
@@ -57,6 +62,16 @@ def resolve_tts_engine(engine: str | None, *, tts_ports: str | None = None) -> T
             tts_ports=tts_ports or os.environ.get("LOGICCUT_OMNIVOICE_TTS_PORTS", "8391"),
             note="LogicCut OmniVoice OpenAI-compatible /tts adapter.",
         )
+    if normalized == "rgad-tts":
+        return TtsEnginePreset(
+            engine="rgad-tts",
+            tts_backend="legacy_router",
+            tts_ports=tts_ports or os.environ.get("LOGICCUT_RGAD_TTS_PORTS", "8393"),
+            note=(
+                "Recommended lightweight local cross-language TTS for small machines, "
+                "especially foreign-to-Chinese voice-cloned dubbing."
+            ),
+        )
     if normalized == "fish-speech-s2":
         return TtsEnginePreset(
             engine="fish-speech-s2",
@@ -67,5 +82,5 @@ def resolve_tts_engine(engine: str | None, *, tts_ports: str | None = None) -> T
         )
     raise ValueError(
         "unsupported TTS engine: "
-        f"{engine!r}; expected fishaudio, indextts2, omnivoice, or fish-speech-s2"
+        f"{engine!r}; expected fishaudio, indextts2, omnivoice, rgad-tts, or fish-speech-s2"
     )

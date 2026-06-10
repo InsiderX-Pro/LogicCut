@@ -142,7 +142,7 @@ def main(argv: list[str] | None = None) -> int:
     translate.add_argument(
         "--tts-engine",
         default=None,
-        choices=["fishaudio", "indextts2", "omnivoice", "fish-speech-s2"],
+        choices=["fishaudio", "indextts2", "omnivoice", "rgad-tts", "rgad-crosslingual-tts", "fish-speech-s2"],
         help="TTS engine preset",
     )
     translate.add_argument("--tts-backend", default=None, help="Advanced video-translate-refine TTS backend override")

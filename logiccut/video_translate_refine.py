@@ -40,7 +40,7 @@ class VideoTranslateRefineConfig:
     speaker_backend: str | None = "pyannote_local"
     asr_text_refine_backend: str | None = "qwen_omni"
     vocal_separation_backend: str | None = None
-    tts_engine: str | None = "fishaudio"
+    tts_engine: str | None = "rgad-tts"
     tts_backend: str | None = None
     tts_ports: str | None = None
     fish_tts_adapter_url: str | None = None
@@ -109,7 +109,7 @@ def config_from_env(
         speaker_backend=os.environ.get("LOGICCUT_SPEAKER_BACKEND", "pyannote_local"),
         asr_text_refine_backend=os.environ.get("LOGICCUT_ASR_TEXT_REFINE_BACKEND", "qwen_omni"),
         vocal_separation_backend=os.environ.get("LOGICCUT_VOCAL_SEPARATION_BACKEND") or None,
-        tts_engine=tts_engine or os.environ.get("LOGICCUT_TTS_ENGINE", "fishaudio"),
+        tts_engine=tts_engine or os.environ.get("LOGICCUT_TTS_ENGINE", "rgad-tts"),
         tts_backend=os.environ.get("LOGICCUT_TTS_BACKEND") or None,
         tts_ports=os.environ.get("LOGICCUT_TTS_PORTS") or None,
         fish_tts_adapter_url=os.environ.get("LOGICCUT_FISH_TTS_ADAPTER_URL") or None,

@@ -130,6 +130,8 @@ class LocalTranslationPipelineTest(unittest.TestCase):
         self.assertIn("ffmpeg", plan["system_dependencies"])
         self.assertIn("faster-whisper", " ".join(plan["optional_python_packages"]))
         self.assertTrue(any("huggingface.co/Systran/faster-whisper-base" in str(item) for item in plan["model_sources"]))
+        self.assertTrue(any("github.com/piedpiperG/rgad-crosslingual-tts" in str(item) for item in plan["model_sources"]))
+        self.assertTrue(any("huggingface.co/isabeth/rgad-crosslingual-tts" in str(item) for item in plan["model_sources"]))
         self.assertTrue(any("logiccut translate-video --backend logiccut-local" in command for command in plan["smoke_commands"]))
 
 

@@ -89,6 +89,7 @@ LogicCut does not include these repositories or weights. Users should download t
 | Speaker diarization | https://huggingface.co/pyannote/speaker-diarization-3.1 | Optional; requires Hugging Face access approval and `HF_TOKEN`. |
 | pyannote segmentation | https://huggingface.co/pyannote/segmentation-3.0 | Dependency for pyannote diarization. |
 | pyannote embedding | https://huggingface.co/pyannote/wespeaker-voxceleb-resnet34-LM | Dependency for pyannote diarization. |
+| RGAD Cross-Lingual TTS | https://github.com/piedpiperG/rgad-crosslingual-tts and https://huggingface.co/isabeth/rgad-crosslingual-tts | Recommended lightweight local TTS for small machines and foreign-to-Chinese voice-cloned dubbing. |
 | Fish Speech TTS | https://github.com/fishaudio/fish-speech | Optional dubbing backend. |
 | IndexTTS2 | https://github.com/index-tts/index-tts and https://huggingface.co/IndexTeam/IndexTTS-2 | Optional Chinese-focused TTS backend. |
 | OmniVoice | https://github.com/k2-fsa/OmniVoice and https://huggingface.co/k2-fsa/OmniVoice | Optional multilingual TTS backend. |
@@ -113,6 +114,25 @@ This is the key Codex-driven behavior: Codex reads the prompt and writes the tra
 The minimal built-in pipeline currently produces a translated subtitled video. Dubbing is still routed through optional services:
 
 - `--backend video-translate-refine` for the existing full dubbing adapter.
+- Recommended small-machine backend: RGAD Cross-Lingual TTS, selected with `--tts-engine rgad-tts`.
 - Fish Speech / IndexTTS2 / OmniVoice service adapters when the user has installed them locally.
+
+Recommended local setting:
+
+```bash
+LOGICCUT_TTS_ENGINE=rgad-tts
+LOGICCUT_TTS_PORTS=8393
+
+logiccut translate-video \
+  --backend video-translate-refine \
+  --input output/my-case/source.mp4 \
+  --output-dir output/my-case/dubbed \
+  --clip 120 \
+  --tgt-lang 中文 \
+  --tts-engine rgad-tts \
+  --burn-subtitles
+```
+
+RGAD Cross-Lingual TTS expects a foreign-language prompt audio and Chinese target text. It is useful when the creator wants local cross-language voice cloning without relying on a large hosted TTS system.
 
 Do not commit downloaded weights, `.env.local`, cookies, generated videos, or token files.

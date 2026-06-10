@@ -39,7 +39,7 @@ Excluded:
 
 ```bash
 python3 -m pytest -q
-# 143 passed
+# 146 passed
 ```
 
 ```bash

@@ -81,6 +81,32 @@ class CliTest(unittest.TestCase):
             self.assertIn("burn_subtitles", payload)
             self.assertIn("true", payload.lower())
 
+    def test_translate_video_accepts_rgad_tts_preset(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            input_video = root / "input.mp4"
+            input_video.write_bytes(b"video")
+
+            with patch("builtins.print") as print_mock:
+                exit_code = main(
+                    [
+                        "translate-video",
+                        "--input",
+                        str(input_video),
+                        "--output-dir",
+                        str(root / "out"),
+                        "--tts-engine",
+                        "rgad-tts",
+                        "--dry-run",
+                    ]
+                )
+
+            self.assertEqual(0, exit_code)
+            payload = print_mock.call_args.args[0]
+            self.assertIn("--tts-ports", payload)
+            self.assertIn("8393", payload)
+            self.assertIn("run_pipeline_profile.py", payload)
+
     def test_translate_video_logiccut_local_backend_uses_minimal_pipeline(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

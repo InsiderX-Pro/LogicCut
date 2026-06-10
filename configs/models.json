@@ -12,7 +12,15 @@
       "role": "tts",
       "source": "local /tts service on 8321 or Fish Speech adapter on 8392",
       "url": "https://github.com/fishaudio/fish-speech",
-      "purpose": "Default TTS engine preset for LogicCut video translation"
+      "purpose": "Optional high-quality TTS engine preset for LogicCut video translation"
+    },
+    {
+      "repo_id": "piedpiperG/rgad-crosslingual-tts",
+      "role": "tts",
+      "source": "local /tts-compatible service on 8393",
+      "url": "https://github.com/piedpiperG/rgad-crosslingual-tts",
+      "huggingface": "https://huggingface.co/isabeth/rgad-crosslingual-tts",
+      "purpose": "Recommended lightweight local cross-language TTS for small-machine deployment and foreign-to-Chinese voice-cloned dubbing"
     },
     {
       "repo_id": "IndexTeam/IndexTTS-2",

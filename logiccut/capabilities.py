@@ -129,7 +129,7 @@ _GUIDES: dict[str, dict[str, Any]] = {
         ],
         "notes": [
             "logiccut-local 不要求用户配置 LLM key；Codex 读取 codex_translation_prompt.md 后写 translated_segments.json。",
-            "完整配音仍可切换到 --backend video-translate-refine，并按文档配置 ASR / pyannote / TTS 服务。",
+            "完整配音仍可切换到 --backend video-translate-refine；本地小机器推荐 --tts-engine rgad-tts，并按文档配置 RGAD Cross-Lingual TTS / ASR / pyannote。",
         ],
     },
     "highlight": {

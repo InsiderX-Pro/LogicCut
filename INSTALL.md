@@ -80,10 +80,13 @@ cp .env.local.example .env.local
 HF_TOKEN=...
 BILIBILI_COOKIES=/path/to/bilibili-cookies.txt
 LOGICCUT_VIDEO_TRANSLATION_BACKEND=video-translate-refine
-LOGICCUT_TTS_ENGINE=indextts2
+LOGICCUT_TTS_ENGINE=rgad-tts
+LOGICCUT_TTS_PORTS=8393
 ```
 
 `.env.local` 已被 `.gitignore` 排除，不要提交真实密钥和 cookies。
+
+本地小机器优先推荐 [RGAD Cross-Lingual TTS](https://github.com/piedpiperG/rgad-crosslingual-tts)。它适合「外语 prompt audio 克隆音色 → 中文文本配音」的翻译场景，权重见 [Hugging Face](https://huggingface.co/isabeth/rgad-crosslingual-tts)。LogicCut 只保存仓库和权重来源，不把模型权重放进本仓库。
 
 ## 验证安装
 

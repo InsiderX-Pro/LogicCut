@@ -36,6 +36,18 @@
       }
     },
     {
+      "name": "rgad-crosslingual-tts",
+      "role": "tts_backend",
+      "repo": "https://github.com/piedpiperG/rgad-crosslingual-tts.git",
+      "path": "third_party/rgad-crosslingual-tts",
+      "reason": "Recommended lightweight local cross-language TTS backend for small-machine foreign-to-Chinese dubbing. LogicCut selects it with --tts-engine rgad-tts and expects a /tts-compatible service on 8393.",
+      "doctor": {
+        "type": "python",
+        "required_ports": [8393],
+        "model_sources": ["https://huggingface.co/isabeth/rgad-crosslingual-tts"]
+      }
+    },
+    {
       "name": "index-tts",
       "role": "tts_backend",
       "repo": "https://github.com/index-tts/index-tts.git",

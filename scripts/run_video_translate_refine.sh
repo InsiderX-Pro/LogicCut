@@ -18,4 +18,4 @@ exec "${ROOT_DIR}/scripts/logiccut.sh" translate-video \
   --translate-backend "${LOGICCUT_TRANSLATE_BACKEND:-qwen35_plus}" \
   --speaker-backend "${LOGICCUT_SPEAKER_BACKEND:-pyannote_local}" \
   --asr-text-refine-backend "${LOGICCUT_ASR_TEXT_REFINE_BACKEND:-qwen_omni}" \
-  --tts-engine "${LOGICCUT_TTS_ENGINE:-fishaudio}"
+  --tts-engine "${LOGICCUT_TTS_ENGINE:-rgad-tts}"

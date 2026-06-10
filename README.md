@@ -34,6 +34,24 @@ LogicCut 不是「又一个视频翻译工具」，也不是「又一个下载�
 
 LogicCut currently supports four creator outputs: **theme openers**, **localized video drafts**, **public-comment recap clips**, and **final remix composition**.
 
+## Local TTS Recommendation
+
+For small local machines and creator laptops, LogicCut recommends **[RGAD Cross-Lingual TTS](https://github.com/piedpiperG/rgad-crosslingual-tts)** as the first TTS backend to try.
+
+RGAD Cross-Lingual TTS is designed for a practical video-translation case: use a short foreign-language prompt audio, keep the speaker timbre, and synthesize Chinese speech from translated Chinese text. Its model weights are hosted separately on [Hugging Face](https://huggingface.co/isabeth/rgad-crosslingual-tts); LogicCut does not vendor the model or weights.
+
+```bash
+LOGICCUT_TTS_ENGINE=rgad-tts
+LOGICCUT_TTS_PORTS=8393
+
+logiccut translate-video \
+  --input source.mp4 \
+  --output-dir output/my-case/translation \
+  --tts-engine rgad-tts \
+  --clip 120 \
+  --tgt-lang 中文
+```
+
 ## Why LogicCut
 
 Most open-source video tools solve one stage: download, subtitle, translate, or cut. LogicCut focuses on the creator workflow around **video repurposing**:
@@ -59,7 +77,7 @@ The long-term story is simple: **teach the agent a video repurposing logic once,
 | Comment-to-video | Beta | Freeze-frame clips and optional narration workflow. |
 | Theme opener | Beta | Agent-assisted theme selection and 15-30s opener rendering. |
 | Video translation | Beta | Built-in Codex-file subtitle translation; optional dubbing through external ASR/TTS backends. |
-| Multi-backend TTS | Experimental | FishAudio / IndexTTS2 / OmniVoice style adapters. |
+| Multi-backend TTS | Experimental | Recommended: RGAD Cross-Lingual TTS for small-machine foreign-to-Chinese dubbing. Optional: FishAudio / IndexTTS2 / OmniVoice adapters. |
 | One-command `create` workflow | Experimental | Convenience wrapper around `plan` + `execute`; inspect the generated plan for real projects. |
 | Editing recipe learning | Roadmap | Reuse a learned editing logic across different source videos. |
 | Optional Web UI | Roadmap | Timeline review and easier creator-facing interaction. |
@@ -225,6 +243,22 @@ logiccut translate-video \
 
 See [docs/local-translation.md](docs/local-translation.md) and [examples/public-video-translation-case.json](examples/public-video-translation-case.json).
 
+For local dubbing, the recommended lightweight path is RGAD Cross-Lingual TTS:
+
+```bash
+LOGICCUT_TTS_ENGINE=rgad-tts
+LOGICCUT_TTS_PORTS=8393
+
+logiccut translate-video \
+  --backend video-translate-refine \
+  --input output/my-case/source.mp4 \
+  --output-dir output/my-case/dubbed \
+  --clip 120 \
+  --tgt-lang 中文 \
+  --tts-engine rgad-tts \
+  --burn-subtitles
+```
+
 ### 6. Path E: Merge Existing Clips
 
 ```bash
@@ -331,7 +365,7 @@ python3 -m py_compile scripts/bootstrap.py logiccut/*.py
 Expected release-candidate validation:
 
 ```text
-143 passed
+146 passed
 ```
 
 ## Roadmap
