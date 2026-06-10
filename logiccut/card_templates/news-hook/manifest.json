@@ -1,0 +1,14 @@
+{
+  "id": "news-hook",
+  "name": "新闻钩子卡",
+  "description": "适合访谈、观点、科技评论，先抛核心冲突和剪辑理由。",
+  "template": "template.html",
+  "aspect_ratios": ["16:9", "9:16"],
+  "max_title_chars": 36,
+  "template_pack": "creator-news",
+  "source_type": "inspired",
+  "origin_repo": "reactvideoeditor/remotion-templates; noeal-dac/Animated-Lower-Thirds; shadcn-ui/ui",
+  "origin_component": "lower-third.tsx; chapter-title.tsx; card primitives",
+  "origin_license": "MIT",
+  "adaptation_notes": "借鉴新闻下三分之一、章节标题和 shadcn 卡片层级，重写为 LogicCut 静态 HTML 模板。"
+}

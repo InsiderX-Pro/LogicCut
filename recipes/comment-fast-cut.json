@@ -1,0 +1,11 @@
+{
+  "id": "comment-fast-cut",
+  "version": "0.2.2",
+  "description": "Render a short, fast-refreshing comment recap video from comment screenshots.",
+  "command": "comment-freeze",
+  "defaults": {
+    "layout": "landscape",
+    "max_frames": 8,
+    "frame_duration": 2.5
+  }
+}

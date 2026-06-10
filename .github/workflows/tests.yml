@@ -1,0 +1,30 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      - name: Install LogicCut lite dependencies
+        run: |
+          python scripts/bootstrap.py --profile lite --skip-playwright
+
+      - name: Run tests
+        run: |
+          PYTHONPATH=. .venv/bin/python -m pytest -q

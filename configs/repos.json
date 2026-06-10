@@ -1,0 +1,95 @@
+{
+  "repos": [
+    {
+      "name": "video-translate-refine",
+      "role": "video_translation",
+      "repo": "external:user-provided",
+      "path": "third_party/video-translate-refine",
+      "reason": "Optional production-style video translation backend. Public releases expect users to clone or configure this backend separately.",
+      "doctor": {
+        "type": "local_python_service_stack",
+        "source_files": ["pyproject.toml", "scripts/run_pipeline_profile.py"],
+        "required_ports": [8301, 8302, 8303, 8321]
+      }
+    },
+    {
+      "name": "omnivoice-studio",
+      "role": "tts_backend",
+      "repo": "https://github.com/debpalash/OmniVoice-Studio.git",
+      "path": "third_party/OmniVoice-Studio",
+      "reason": "Optional OmniVoice TTS backend. LogicCut exposes a /tts compatibility adapter on port 8391 and forwards to OmniVoice Studio's OpenAI-compatible audio endpoint.",
+      "doctor": {
+        "type": "node_python",
+        "source_files": ["pyproject.toml", "uv.lock"],
+        "node_files": ["package.json", "bun.lock"]
+      }
+    },
+    {
+      "name": "fish-speech",
+      "role": "tts_backend",
+      "repo": "https://github.com/fishaudio/fish-speech.git",
+      "path": "third_party/fish-speech",
+      "reason": "FishAudio / Fish Speech S2 TTS backend. Current local compatible /tts service runs on 8321; native Fish adapter can be started on 8392.",
+      "doctor": {
+        "type": "python",
+        "required_ports": [8321]
+      }
+    },
+    {
+      "name": "index-tts",
+      "role": "tts_backend",
+      "repo": "https://github.com/index-tts/index-tts.git",
+      "path": "third_party/index-tts",
+      "reason": "IndexTTS2 TTS backend. Current local hot-spare gateway runs on 8304 and can be selected with --tts-engine indextts2.",
+      "doctor": {
+        "type": "python",
+        "required_ports": [8304]
+      }
+    },
+    {
+      "name": "ai-youtube-shorts-generator",
+      "role": "highlight_clipping",
+      "repo": "https://github.com/SamurAIGPT/AI-Youtube-Shorts-Generator.git",
+      "path": "third_party/AI-Youtube-Shorts-Generator",
+      "reason": "Primary reference adapter for highlight detection, shorts generation, Whisper transcription, and vertical cropping.",
+      "doctor": {
+        "type": "python",
+        "python_files": ["requirements.txt", "requirements-local.txt"]
+      }
+    },
+    {
+      "name": "auto-editor",
+      "role": "rough_cut",
+      "repo": "https://github.com/WyattBlue/auto-editor.git",
+      "path": "third_party/auto-editor",
+      "reason": "Auxiliary rough-cut tool for removing silence and low-value segments before highlight clipping.",
+      "doctor": {
+        "type": "nim_package",
+        "source_files": ["ae.nimble"]
+      }
+    },
+    {
+      "name": "openreel-video",
+      "role": "timeline_ui_reference",
+      "repo": "https://github.com/Augani/openreel-video.git",
+      "path": "third_party/openreel-video",
+      "reason": "Reference implementation for browser timeline, preview, and open-source CapCut-like editing UI.",
+      "doctor": {
+        "type": "node",
+        "node_files": ["package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml"]
+      }
+    },
+    {
+      "name": "money-printer-turbo",
+      "role": "product_reference",
+      "repo": "https://github.com/harry0703/MoneyPrinterTurbo.git",
+      "path": "third_party/MoneyPrinterTurbo",
+      "reason": "Reference for one-click short-video generation workflow and product packaging.",
+      "doctor": {
+        "type": "python",
+        "python_files": ["requirements.txt"],
+        "source_files": ["pyproject.toml", "uv.lock", "config.example.toml"]
+      }
+    }
+  ]
+}

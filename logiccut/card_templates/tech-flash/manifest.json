@@ -1,0 +1,14 @@
+{
+  "id": "tech-flash",
+  "name": "科技快讯钩子",
+  "description": "模仿科技资讯封面语言：霓虹标题条、强冲突大字、视频主体和高光字幕。",
+  "template": "template.html",
+  "aspect_ratios": ["16:9", "9:16"],
+  "max_title_chars": 34,
+  "template_pack": "tech-news-neon",
+  "source_type": "native-inspired",
+  "origin_repo": "LogicCut visual study; tech-news short video layout references",
+  "origin_component": "neon headline bar; video deck; bold CJK hook typography",
+  "origin_license": "project",
+  "adaptation_notes": "根据科技资讯短视频常见封面结构重写，突出顶部主题条、左侧冲突标题和右侧视频证据。"
+}

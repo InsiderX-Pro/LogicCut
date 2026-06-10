@@ -1,0 +1,12 @@
+{
+  "id": "theme-opener",
+  "version": "0.2",
+  "description": "Ask Codex to select source moments around a creator theme, then render a 15-30s opener.",
+  "command": "run --recipe theme-opener",
+  "codex_required": true,
+  "defaults": {
+    "target_duration": 24,
+    "watermark": "高光剪辑",
+    "subtitle_style": "captioner"
+  }
+}

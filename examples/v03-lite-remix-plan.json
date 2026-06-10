@@ -1,0 +1,67 @@
+{
+  "version": "0.3",
+  "project_dir": "output/demo-lite-remix",
+  "source": {
+    "url": "https://www.youtube.com/watch?v=96jN2OCOfLs",
+    "input": null
+  },
+  "tasks": [
+    "download",
+    "comments",
+    "comment-freeze",
+    "merge"
+  ],
+  "options": {
+    "target_lang": "中文",
+    "theme": "auto",
+    "highlight_duration": 20,
+    "comment_duration": 20,
+    "comment_count": 30
+  },
+  "steps": [
+    {
+      "id": "download",
+      "command": "download",
+      "args": {
+        "url": "https://www.youtube.com/watch?v=96jN2OCOfLs",
+        "output_dir": "output/demo-lite-remix/download",
+        "prefix": "source"
+      }
+    },
+    {
+      "id": "comments",
+      "command": "comments",
+      "args": {
+        "url": "https://www.youtube.com/watch?v=96jN2OCOfLs",
+        "output_dir": "output/demo-lite-remix/comments",
+        "limit": 30,
+        "screenshot_count": 8
+      }
+    },
+    {
+      "id": "comment-freeze",
+      "command": "comment-freeze",
+      "args": {
+        "comments_json": "output/demo-lite-remix/comments/comments.json",
+        "output_dir": "output/demo-lite-remix/comments/fast-cut-20s",
+        "max_frames": 8,
+        "frame_duration": 2.5
+      }
+    },
+    {
+      "id": "merge",
+      "command": "merge",
+      "args": {
+        "inputs": [
+          "output/demo-lite-remix/comments/fast-cut-20s/comment_freeze_video.mp4"
+        ],
+        "output": "output/demo-lite-remix/final/final_remix.mp4"
+      }
+    }
+  ],
+  "codex_notes": [
+    "Review this plan before execution.",
+    "Replace the example URL with authorized content.",
+    "Do not commit generated videos, cookies, tokens, or model weights."
+  ]
+}

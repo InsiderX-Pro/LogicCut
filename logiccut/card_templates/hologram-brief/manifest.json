@@ -1,0 +1,14 @@
+{
+  "id": "hologram-brief",
+  "name": "全息情报版",
+  "description": "把高光理由拆成透明信息面板，适合科普、AI 工具、商业分析类视频。",
+  "template": "template.html",
+  "aspect_ratios": ["16:9", "9:16"],
+  "max_title_chars": 32,
+  "template_pack": "tech-news-neon",
+  "source_type": "native-inspired",
+  "origin_repo": "LogicCut visual study; holographic dashboard and neon HUD references",
+  "origin_component": "HUD panels; metric block; keyword chips",
+  "origin_license": "project",
+  "adaptation_notes": "参考 HUD 信息面板和全息仪表盘，将剪辑理由做成可扩展数据卡布局。"
+}

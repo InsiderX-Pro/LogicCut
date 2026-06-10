@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{title}}</title>
+  <style>{{common_css}}</style>
+</head>
+<body>
+  <main data-composition-id="logiccut-chapter-card" data-width="{{width}}" data-height="{{height}}" class="template-{{template_id}}" style="--progress: {{progress}}%;">
+    <section class="stage">
+      <article class="copy">
+        <span class="eyebrow">{{label}}</span>
+        <h1>{{title}}</h1>
+        <div class="conflict-grid">
+          <div class="conflict-box"><b>冲突点</b><span>{{hook}}</span></div>
+          <div class="conflict-box"><b>剪辑理由</b><span>{{reason}}</span></div>
+        </div>
+      </article>
+      <aside class="media">
+        <div class="frame-wrap">{{poster_html}}{{score_html}}</div>
+        <div class="structure"><strong>进入方式</strong><span>{{structure}}</span></div>
+        <div class="chips">{{keywords_html}}</div>
+      </aside>
+    </section>
+    <footer><span>{{template_name}}</span><span>{{time_label}}</span></footer>
+  </main>
+</body>
+</html>

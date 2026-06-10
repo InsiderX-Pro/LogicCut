@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{title}}</title>
+  <style>{{common_css}}</style>
+</head>
+<body>
+  <main data-composition-id="logiccut-chapter-card" data-width="{{width}}" data-height="{{height}}" class="template-{{template_id}}" style="--progress: {{progress}}%;">
+    <div class="tech-grid"></div>
+    <section class="hologram-stage">
+      <header class="tech-ribbon"><span>{{label}}</span><b>{{time_label}}</b></header>
+      <article class="hud-title">
+        <p class="tech-kicker">{{hook}}</p>
+        <h1>{{title}}</h1>
+      </article>
+      <div class="hud-layout">
+        <div class="hud-video">{{poster_html}}</div>
+        <aside class="hud-panel primary"><b>剪辑依据</b><span>{{reason}}</span></aside>
+        <aside class="hud-panel metric"><b>高光指数</b><strong>{{score_number}}</strong><div class="chips">{{keywords_html}}</div></aside>
+      </div>
+      <footer class="tech-footer"><span>{{template_name}}</span><span>{{structure}}</span></footer>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,46 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+node_modules/
+dist/
+build/
+
+# Runtime and third-party checkouts
+third_party/
+logs/
+output/
+runs/
+tmp/
+models/
+model_cache/
+.cache/
+
+# Credentials and private local config
+.env
+.env.*
+!.env.local.example
+*.pem
+*.key
+*.p8
+*.p12
+*.crt
+id_rsa*
+id_ed25519*
+credentials*.json
+secrets*.json
+cookies*.txt
+
+# Large media should be opt-in fixtures only.
+*.mp4
+*.mov
+*.mkv
+*.wav
+*.mp3
+*.flac
+!examples/**/*.srt

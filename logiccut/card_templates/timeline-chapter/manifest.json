@@ -1,0 +1,14 @@
+{
+  "id": "timeline-chapter",
+  "name": "章节时间线卡",
+  "description": "适合长视频分章，强调片段在整条视频中的位置。",
+  "template": "template.html",
+  "aspect_ratios": ["16:9", "9:16"],
+  "max_title_chars": 34,
+  "template_pack": "course-explainer",
+  "source_type": "inspired",
+  "origin_repo": "slidevjs/slidev; hakimel/reveal.js; motion-canvas/motion-canvas",
+  "origin_component": "slide section layouts; auto-animate concepts; timeline animation",
+  "origin_license": "MIT",
+  "adaptation_notes": "借鉴演示页章节结构和信息动画节奏，重写为 LogicCut 分章时间线模板。"
+}

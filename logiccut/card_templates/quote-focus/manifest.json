@@ -1,0 +1,14 @@
+{
+  "id": "quote-focus",
+  "name": "金句聚焦卡",
+  "description": "适合观点金句、访谈反差、强表达片段。",
+  "template": "template.html",
+  "aspect_ratios": ["16:9", "9:16"],
+  "max_title_chars": 30,
+  "template_pack": "podcast-quote",
+  "source_type": "inspired",
+  "origin_repo": "reactvideoeditor/remotion-templates; magicuidesign/magicui",
+  "origin_component": "quote-card.tsx; animated text effects",
+  "origin_license": "MIT",
+  "adaptation_notes": "借鉴金句卡和文字强调动效的视觉语言，重写为适合旁白导览的静态 HTML 模板。"
+}

@@ -1,0 +1,28 @@
+{
+  "version": "0.2",
+  "theme": "China feels safe",
+  "target_duration": 24,
+  "segments": [
+    {
+      "start": 12.4,
+      "end": 18.2,
+      "title": "Friendly first contact",
+      "subtitle": "这里的陌生人互动让人放松。",
+      "reason": "Start with human warmth before making the safety claim."
+    },
+    {
+      "start": 92.0,
+      "end": 101.5,
+      "title": "Clean and calm streets",
+      "subtitle": "街道干净，城市秩序感很强。",
+      "reason": "Use visible environment evidence to support the theme."
+    },
+    {
+      "start": 180.0,
+      "end": 189.0,
+      "title": "Strong proof point",
+      "subtitle": "贵重物品放在桌上也没人碰。",
+      "reason": "Close with a concrete moment viewers can remember."
+    }
+  ]
+}

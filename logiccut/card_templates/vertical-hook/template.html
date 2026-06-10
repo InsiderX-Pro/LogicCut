@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{title}}</title>
+  <style>{{common_css}}</style>
+</head>
+<body>
+  <main data-composition-id="logiccut-chapter-card" data-width="{{width}}" data-height="{{height}}" class="template-{{template_id}}" style="--progress: {{progress}}%;">
+    <section class="stage">
+      <article class="copy">
+        <span class="eyebrow">{{label}}</span>
+        <h1 class="vertical-title">{{title}}</h1>
+        <div class="meta"><span>{{time_label}}</span><div class="progress"><span></span></div></div>
+      </article>
+      <aside class="media">
+        <div class="frame-wrap">{{poster_html}}{{score_html}}</div>
+        <article class="reason"><b>开场钩子</b><span>{{hook}}</span></article>
+        <div class="structure"><strong>为什么这样剪</strong><span>{{reason}}</span></div>
+      </aside>
+    </section>
+    <footer><span>{{template_name}}</span><span>LogicCut creator remix</span></footer>
+  </main>
+</body>
+</html>

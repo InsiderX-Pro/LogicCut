@@ -1,0 +1,14 @@
+{
+  "id": "vertical-hook",
+  "name": "竖屏钩子卡",
+  "description": "适合短视频平台，保留 9:16 安全区，同时也能横屏预览。",
+  "template": "template.html",
+  "aspect_ratios": ["16:9", "9:16"],
+  "max_title_chars": 24,
+  "template_pack": "shorts-hook",
+  "source_type": "inspired",
+  "origin_repo": "magicuidesign/magicui; reactvideoeditor/remotion-templates; shadcn-ui/ui",
+  "origin_component": "animated text effects; text-highlight.tsx; mobile card primitives",
+  "origin_license": "MIT",
+  "adaptation_notes": "借鉴短视频钩子大字、文字高亮和移动端安全区，重写为 9:16 优先模板。"
+}

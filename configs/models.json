@@ -1,0 +1,87 @@
+{
+  "default": [
+    {
+      "repo_id": "video-translate-refine:v3",
+      "role": "video_translation_pipeline",
+      "source": "local project adapter",
+      "purpose": "Primary LogicCut video translation structure: local vocal separation, local ASR diarization, LLM translation, selectable TTS gateway, alignment, subtitles and mixdown"
+    },
+    {
+      "repo_id": "FishAudio / Fish Speech S2",
+      "role": "tts",
+      "source": "local /tts service on 8321 or Fish Speech adapter on 8392",
+      "purpose": "Default TTS engine preset for LogicCut video translation"
+    },
+    {
+      "repo_id": "IndexTeam/IndexTTS-2",
+      "role": "tts",
+      "source": "local IndexTTS2 gateway on 8304",
+      "purpose": "Chinese-focused TTS backend; supports the indextts2_decoupled ref strategy when enabled"
+    },
+    {
+      "repo_id": "k2-fsa/OmniVoice",
+      "role": "tts",
+      "source": "OmniVoice Studio API through LogicCut /tts adapter on 8391",
+      "purpose": "Optional OmniVoice TTS backend for multilingual synthesis experiments"
+    },
+    {
+      "repo_id": "Systran/faster-whisper-large-v3",
+      "role": "asr",
+      "source": "OmniVoice Studio",
+      "purpose": "Default high-quality local ASR"
+    },
+    {
+      "repo_id": "Systran/faster-whisper-base",
+      "role": "asr",
+      "source": "local smoke",
+      "purpose": "Fast local ASR preview and smoke tests"
+    },
+    {
+      "repo_id": "qwen35_plus / codex provider",
+      "role": "translation",
+      "source": "video-translate-refine / LogicCut creative driver",
+      "purpose": "Quality-critical translation via large model provider. Local NLLB is not used for production video translation."
+    },
+    {
+      "repo_id": "Aliyun Fun-ASR",
+      "role": "asr_verification",
+      "source": "video-translate-refine",
+      "purpose": "Secondary ASR missing-sentence check and TTS posterior ASR verification"
+    },
+    {
+      "repo_id": "facebook/audioseal",
+      "role": "watermark",
+      "source": "OmniVoice Studio AudioSeal integration",
+      "cache_type": "audioseal",
+      "files": [
+        "https://huggingface.co/facebook/audioseal/resolve/main/generator_base.pth",
+        "https://huggingface.co/facebook/audioseal/resolve/main/detector_base.pth"
+      ],
+      "purpose": "Invisible audio watermark generator/detector used by generated speech"
+    }
+  ],
+  "gated_optional": [
+    {
+      "repo_id": "pyannote/speaker-diarization-3.1",
+      "role": "diarization",
+      "source": "video-translate-refine pyannote_local backend",
+      "requires_env": "HF_TOKEN",
+      "purpose": "Default local speaker diarization for LogicCut video translation"
+    },
+    {
+      "repo_id": "pyannote/segmentation-3.0",
+      "role": "diarization",
+      "source": "pyannote speaker-diarization-3.1 dependency",
+      "requires_env": "HF_TOKEN",
+      "purpose": "Segmentation model required by pyannote/speaker-diarization-3.1"
+    },
+    {
+      "repo_id": "pyannote/wespeaker-voxceleb-resnet34-LM",
+      "role": "diarization",
+      "source": "pyannote speaker-diarization-3.1 dependency",
+      "requires_env": "HF_TOKEN",
+      "purpose": "Speaker embedding model required by pyannote/speaker-diarization-3.1"
+    }
+  ],
+  "isolated_optional": []
+}

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{title}}</title>
+  <style>{{common_css}}</style>
+</head>
+<body>
+  <main data-composition-id="logiccut-chapter-card" data-width="{{width}}" data-height="{{height}}" class="template-{{template_id}}" style="--progress: {{progress}}%;">
+    <div class="tech-grid"></div>
+    <section class="corridor-stage">
+      <header class="tech-ribbon"><span>{{label}}</span><b>{{time_label}}</b></header>
+      <article class="corridor-title">
+        <p class="tech-kicker">{{hook}}</p>
+        <h1>{{title}}</h1>
+      </article>
+      <div class="corridor-panels">
+        <article><b>章节判断</b><span>{{reason}}</span></article>
+        <article><b>进入方式</b><span>{{structure}}</span></article>
+      </div>
+      <div class="corridor-scene"><span></span><span></span><span></span><span></span><i></i></div>
+      <footer class="tech-footer"><span>{{template_name}}</span><div class="chips">{{keywords_html}}</div></footer>
+    </section>
+  </main>
+</body>
+</html>

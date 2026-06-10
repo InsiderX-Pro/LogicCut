@@ -1,0 +1,14 @@
+{
+  "id": "chip-keynote",
+  "name": "芯片发布会版",
+  "description": "适合 AI、硬件、商业发布会内容，用舞台感画面和参数栏制造专业感。",
+  "template": "template.html",
+  "aspect_ratios": ["16:9", "9:16"],
+  "max_title_chars": 32,
+  "template_pack": "tech-news-neon",
+  "source_type": "native-inspired",
+  "origin_repo": "LogicCut visual study; keynote stage and product spec layouts",
+  "origin_component": "launch-stage frame; specification rail; neon progress divider",
+  "origin_license": "project",
+  "adaptation_notes": "将发布会大屏、产品参数栏和短视频字幕结构融合为章节开场卡。"
+}

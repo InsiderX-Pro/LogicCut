@@ -1,0 +1,14 @@
+{
+  "id": "data-insight",
+  "name": "数字洞察卡",
+  "description": "适合 AI、财经、商业、教程类视频，用分数和关键词快速建立判断。",
+  "template": "template.html",
+  "aspect_ratios": ["16:9", "9:16"],
+  "max_title_chars": 32,
+  "template_pack": "data-story",
+  "source_type": "inspired",
+  "origin_repo": "reactvideoeditor/remotion-templates; shadcn-ui/ui; themesberg/flowbite",
+  "origin_component": "stat-counter.tsx; chart-animation.tsx; metric cards",
+  "origin_license": "MIT",
+  "adaptation_notes": "借鉴数据指标卡、统计数字和信息面板布局，重写为无运行时依赖的 HTML 模板。"
+}

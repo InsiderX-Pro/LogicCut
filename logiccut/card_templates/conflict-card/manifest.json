@@ -1,0 +1,14 @@
+{
+  "id": "conflict-card",
+  "name": "冲突对比卡",
+  "description": "适合观点冲突、反转剧情、前后对比类片段。",
+  "template": "template.html",
+  "aspect_ratios": ["16:9", "9:16"],
+  "max_title_chars": 34,
+  "template_pack": "creator-news",
+  "source_type": "inspired",
+  "origin_repo": "reactvideoeditor/remotion-templates; shadcn-ui/ui",
+  "origin_component": "comparison-chart.tsx; split-screen.tsx; card primitives",
+  "origin_license": "MIT",
+  "adaptation_notes": "借鉴对比图、分屏和新闻冲突卡的结构，重写为二创片段选择理由模板。"
+}

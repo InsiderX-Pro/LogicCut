@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://logiccut.local/schemas/project.schema.json",
+  "title": "LogicCut Project Manifest",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "title",
+    "created_at",
+    "updated_at",
+    "input",
+    "transcripts",
+    "speakers",
+    "tracks",
+    "clips",
+    "timeline",
+    "style",
+    "renders",
+    "recipes",
+    "logs"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.2"
+    },
+    "title": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "updated_at": {
+      "type": "string"
+    },
+    "input": {
+      "type": "object",
+      "required": ["path", "kind", "source"],
+      "properties": {
+        "path": {"type": "string"},
+        "kind": {"type": "string"},
+        "source": {"type": "string"}
+      }
+    },
+    "transcripts": {"type": "array"},
+    "speakers": {"type": "array"},
+    "tracks": {"type": "array"},
+    "clips": {"type": "array"},
+    "timeline": {"type": "array"},
+    "style": {"type": "object"},
+    "renders": {"type": "array"},
+    "recipes": {"type": "array"},
+    "logs": {"type": "array"}
+  }
+}

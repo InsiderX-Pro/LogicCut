@@ -1,0 +1,14 @@
+{
+  "id": "cyber-lower-third",
+  "name": "赛博字幕条",
+  "description": "视频画面占主导，底部用科技感字幕条解释剪辑理由，适合直接插入正片前。",
+  "template": "template.html",
+  "aspect_ratios": ["16:9", "9:16"],
+  "max_title_chars": 30,
+  "template_pack": "tech-news-neon",
+  "source_type": "native-inspired",
+  "origin_repo": "LogicCut visual study; broadcast lower-third and tech explainer captions",
+  "origin_component": "full-frame video; neon lower third; caption plate",
+  "origin_license": "project",
+  "adaptation_notes": "将电视新闻下三分之一和短视频强字幕融合，适合低打断感地解释这一段为什么被剪入。"
+}

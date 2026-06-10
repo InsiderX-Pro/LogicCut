@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{title}}</title>
+  <style>{{common_css}}</style>
+</head>
+<body>
+  <main data-composition-id="logiccut-chapter-card" data-width="{{width}}" data-height="{{height}}" class="template-{{template_id}}" style="--progress: {{progress}}%;">
+    <div class="tech-grid"></div>
+    <section class="keynote-stage">
+      <header class="tech-ribbon"><span>{{label}}</span><b>{{template_name}}</b></header>
+      <div class="keynote-media">{{poster_html}}</div>
+      <article class="keynote-copy">
+        <p class="tech-kicker">{{hook}}</p>
+        <h1>{{title}}</h1>
+        <div class="keynote-caption">{{reason}}</div>
+      </article>
+      <aside class="spec-rail">
+        <span>Highlight Score</span>
+        <strong>{{score_number}}</strong>
+        <div class="chips">{{keywords_html}}</div>
+      </aside>
+      <footer class="tech-footer"><span>{{time_label}}</span><span>{{structure}}</span></footer>
+    </section>
+  </main>
+</body>
+</html>

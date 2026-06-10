@@ -1,0 +1,14 @@
+{
+  "id": "vertical-tech-news",
+  "name": "竖屏科技日报",
+  "description": "最贴近参考图的竖屏科技资讯版：顶部横幅、大标题、视频区、中文字幕和底部科技空间。",
+  "template": "template.html",
+  "aspect_ratios": ["9:16", "16:9"],
+  "max_title_chars": 28,
+  "template_pack": "tech-news-neon",
+  "source_type": "native-inspired",
+  "origin_repo": "LogicCut visual study; vertical tech news cover references",
+  "origin_component": "top gradient headline; bold CJK impact title; embedded video panel",
+  "origin_license": "project",
+  "adaptation_notes": "针对短视频平台重写，优先保证 9:16 安全区、标题可读性和中部视频解释关系。"
+}

@@ -1,0 +1,14 @@
+{
+  "id": "neon-corridor",
+  "name": "霓虹走廊章节",
+  "description": "用底部未来走廊和发光面板制造章节推进感，适合长视频切片分章。",
+  "template": "template.html",
+  "aspect_ratios": ["16:9", "9:16"],
+  "max_title_chars": 30,
+  "template_pack": "tech-news-neon",
+  "source_type": "native-inspired",
+  "origin_repo": "LogicCut visual study; sci-fi corridor title card references",
+  "origin_component": "corridor panels; chapter route; neon divider",
+  "origin_license": "project",
+  "adaptation_notes": "参考科技短视频底部空间延伸感，重写为可放在每章前的导览卡。"
+}

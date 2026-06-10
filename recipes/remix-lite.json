@@ -1,0 +1,17 @@
+{
+  "id": "remix-lite",
+  "version": "0.3",
+  "description": "Import a link, capture public comments, create a 20s comment fast-cut, and merge outputs.",
+  "tasks": [
+    "download",
+    "comments",
+    "comment-freeze",
+    "merge"
+  ],
+  "defaults": {
+    "target_lang": "中文",
+    "theme": "auto",
+    "comment_duration": 20,
+    "comment_count": 30
+  }
+}
