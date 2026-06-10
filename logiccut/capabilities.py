@@ -84,6 +84,73 @@ _FEATURES: list[dict[str, Any]] = [
 ]
 
 
+_LOCAL_MODEL_STACK: list[dict[str, str]] = [
+    {
+        "stage": "video_import",
+        "source": "yt-dlp",
+        "role": "Download authorized YouTube / Bilibili videos and metadata.",
+    },
+    {
+        "stage": "media_processing",
+        "source": "FFmpeg / FFprobe",
+        "role": "Cut clips, normalize streams, burn subtitles, and merge final videos.",
+    },
+    {
+        "stage": "asr",
+        "source": "faster-whisper base / large-v3",
+        "role": "Generate timed local transcripts for real videos.",
+    },
+    {
+        "stage": "speaker_diarization",
+        "source": "pyannote/speaker-diarization-3.1",
+        "role": "Local multi-speaker segmentation for dubbing.",
+    },
+    {
+        "stage": "translation",
+        "source": "Codex-file workflow / local qwen35_plus style provider",
+        "role": "Translate timed segments without requiring a separate hosted LLM key in the Codex-file path.",
+    },
+    {
+        "stage": "tts",
+        "source": "RGAD Cross-Lingual TTS / FishAudio S2 / IndexTTS2 / OmniVoice",
+        "role": "Generate local dubbed audio through selectable TTS backends.",
+    },
+    {
+        "stage": "subtitles",
+        "source": "subcap-style ASS + FFmpeg/libass",
+        "role": "Render Chinese subtitles and SRT outputs.",
+    },
+]
+
+
+_TTS_BACKENDS: list[dict[str, str]] = [
+    {
+        "engine": "rgad-tts",
+        "endpoint": "127.0.0.1:8393",
+        "source": "https://github.com/piedpiperG/rgad-crosslingual-tts",
+        "role": "Recommended lightweight local foreign-prompt-to-Chinese voice-cloned dubbing.",
+    },
+    {
+        "engine": "fishaudio / fish-speech-s2",
+        "endpoint": "127.0.0.1:8321 / 127.0.0.1:8392",
+        "source": "https://github.com/fishaudio/fish-speech",
+        "role": "FishAudio S2 compatible /tts service or native Fish Speech adapter.",
+    },
+    {
+        "engine": "indextts2",
+        "endpoint": "127.0.0.1:8304",
+        "source": "https://github.com/index-tts/index-tts",
+        "role": "Chinese-focused local synthesis and reference-voice experiments.",
+    },
+    {
+        "engine": "omnivoice",
+        "endpoint": "127.0.0.1:8391",
+        "source": "https://github.com/k2-fsa/OmniVoice",
+        "role": "Multilingual TTS experiments through LogicCut's compatibility adapter.",
+    },
+]
+
+
 _GUIDES: dict[str, dict[str, Any]] = {
     "download": {
         "task": "download",
@@ -229,6 +296,9 @@ def build_capabilities() -> dict[str, Any]:
         "version": "0.3",
         "usage_modes": ["codex", "cli", "local-first"],
         "features": deepcopy(_FEATURES),
+        "translation_default": "local-first",
+        "local_model_stack": deepcopy(_LOCAL_MODEL_STACK),
+        "tts_backends": deepcopy(_TTS_BACKENDS),
         "recommended_flow": ["doctor", "plan", "execute", "merge"],
     }
 

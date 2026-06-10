@@ -117,6 +117,13 @@ The minimal built-in pipeline currently produces a translated subtitled video. D
 - Recommended small-machine backend: RGAD Cross-Lingual TTS, selected with `--tts-engine rgad-tts`.
 - Fish Speech / IndexTTS2 / OmniVoice service adapters when the user has installed them locally.
 
+| Engine | Selector | Default Endpoint | Role |
+| --- | --- | --- | --- |
+| RGAD Cross-Lingual TTS | `rgad-tts` | `127.0.0.1:8393` | Recommended lightweight local foreign-prompt-to-Chinese dubbing. |
+| FishAudio / Fish Speech S2 | `fishaudio` or `fish-speech-s2` | `127.0.0.1:8321` / `127.0.0.1:8392` | Optional higher-quality local TTS and native Fish Speech adapter path. |
+| IndexTTS2 | `indextts2` | `127.0.0.1:8304` | Optional Chinese-focused synthesis and reference-voice experiments. |
+| OmniVoice / OmniVoice Studio | `omnivoice` | `127.0.0.1:8391` | Optional multilingual TTS experiments through LogicCut's adapter. |
+
 Recommended local setting:
 
 ```bash
