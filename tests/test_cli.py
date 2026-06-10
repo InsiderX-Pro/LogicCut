@@ -81,6 +81,71 @@ class CliTest(unittest.TestCase):
             self.assertIn("burn_subtitles", payload)
             self.assertIn("true", payload.lower())
 
+    def test_translate_video_logiccut_local_backend_uses_minimal_pipeline(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            input_video = root / "input.mp4"
+            transcript = root / "transcript.json"
+            output_dir = root / "out"
+            input_video.write_bytes(b"video")
+            transcript.write_text('{"segments": []}', encoding="utf-8")
+
+            with (
+                patch(
+                    "logiccut.cli.run_local_translation",
+                    return_value=type(
+                        "Result",
+                        (),
+                        {
+                            "status": "needs_codex_translation",
+                            "output_dir": output_dir,
+                            "manifest_path": output_dir / "translation_manifest.json",
+                            "prompt_path": output_dir / "codex_translation_prompt.md",
+                            "transcript_path": output_dir / "source_transcript.json",
+                            "todo_translation_path": output_dir / "translated_segments.todo.json",
+                            "translation_path": output_dir / "translated_segments.json",
+                            "subtitle_path": None,
+                            "output_video": None,
+                        },
+                    )(),
+                ) as translate_mock,
+                patch("builtins.print") as print_mock,
+            ):
+                exit_code = main(
+                    [
+                        "translate-video",
+                        "--backend",
+                        "logiccut-local",
+                        "--input",
+                        str(input_video),
+                        "--output-dir",
+                        str(output_dir),
+                        "--transcript-json",
+                        str(transcript),
+                        "--tgt-lang",
+                        "中文",
+                    ]
+                )
+
+            self.assertEqual(0, exit_code)
+            translate_mock.assert_called_once()
+            config = translate_mock.call_args.args[0]
+            self.assertEqual(input_video, config.input_video)
+            self.assertEqual(transcript, config.transcript_json)
+            self.assertEqual("中文", config.target_language)
+            payload = print_mock.call_args.args[0]
+            self.assertIn("logiccut-local", payload)
+            self.assertIn("needs_codex_translation", payload)
+
+    def test_setup_translation_prints_install_plan(self) -> None:
+        with patch("builtins.print") as print_mock:
+            exit_code = main(["setup", "translation", "--profile", "minimal", "--dry-run"])
+
+        self.assertEqual(0, exit_code)
+        payload = print_mock.call_args.args[0]
+        self.assertIn('"component": "translation"', payload)
+        self.assertIn("logiccut translate-video --backend logiccut-local", payload)
+
     def test_run_accepts_guided_highlights_recipe(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             project = Path(tmp) / "project"

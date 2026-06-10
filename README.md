@@ -58,7 +58,7 @@ The long-term story is simple: **teach the agent a video repurposing logic once,
 | Public comment import / analysis | Beta | Public comments, screenshots, single-comment visual items. |
 | Comment-to-video | Beta | Freeze-frame clips and optional narration workflow. |
 | Theme opener | Beta | Agent-assisted theme selection and 15-30s opener rendering. |
-| Video translation | Beta | Adapter-based; full quality depends on configured ASR/TTS backends. |
+| Video translation | Beta | Built-in Codex-file subtitle translation; optional dubbing through external ASR/TTS backends. |
 | Multi-backend TTS | Experimental | FishAudio / IndexTTS2 / OmniVoice style adapters. |
 | One-command `create` workflow | Experimental | Convenience wrapper around `plan` + `execute`; inspect the generated plan for real projects. |
 | Editing recipe learning | Roadmap | Reuse a learned editing logic across different source videos. |
@@ -71,7 +71,7 @@ LogicCut is currently in public preview. The recommended first-time path is loca
 Some workflows depend on external services or platform availability:
 
 - Link import may require cookies or fail when platforms change their access rules.
-- Video translation quality depends on the configured ASR, translation, and TTS backends.
+- Built-in video translation currently focuses on translated subtitles. Dubbing still depends on optional ASR/TTS backends.
 - Theme opener generation is still improving for long videos and complex narratives.
 - Comment-to-video currently focuses on simple freeze-frame and narration workflows.
 - There is no full Web UI yet; the project is currently CLI-first and agent-friendly.
@@ -187,7 +187,45 @@ Then execute:
 logiccut execute --plan output/my-case/logiccut_plan.json
 ```
 
-### 5. Path D: Merge Existing Clips
+### 5. Path D: Local Video Translation
+
+This path uses LogicCut's built-in file-based translation pipeline. Codex reads the generated prompt and writes `translated_segments.json`; users do not need to configure a separate LLM API key for translation.
+
+```bash
+logiccut setup translation --profile asr --dry-run
+
+logiccut translate-video \
+  --backend logiccut-local \
+  --input output/my-case/source.mp4 \
+  --output-dir output/my-case/translation \
+  --clip 90 \
+  --tgt-lang 中文
+```
+
+For real ASR on a user machine, run `logiccut setup translation --profile asr --install` or provide an existing transcript with `--transcript-json`.
+
+The first run writes:
+
+```text
+output/my-case/translation/codex_translation_prompt.md
+output/my-case/translation/translated_segments.todo.json
+```
+
+After Codex writes `translated_segments.json`, render the translated video:
+
+```bash
+logiccut translate-video \
+  --backend logiccut-local \
+  --input output/my-case/source.mp4 \
+  --output-dir output/my-case/translation \
+  --translation-json output/my-case/translation/translated_segments.json \
+  --clip 90 \
+  --tgt-lang 中文
+```
+
+See [docs/local-translation.md](docs/local-translation.md) and [examples/public-video-translation-case.json](examples/public-video-translation-case.json).
+
+### 6. Path E: Merge Existing Clips
 
 ```bash
 logiccut merge \
@@ -218,6 +256,7 @@ Release examples are stored in [examples/](examples/) and [recipes/](recipes/):
 - `recipes/theme-opener.json`: local video → Codex theme opener.
 - `recipes/comment-fast-cut.json`: comments JSON → 20s fast comment recap.
 - `examples/v03-lite-remix-plan.json`: an example `logiccut_plan.json`.
+- `examples/public-video-translation-case.json`: 90s public-video translation acceptance case.
 
 ## Architecture
 
@@ -292,7 +331,7 @@ python3 -m py_compile scripts/bootstrap.py logiccut/*.py
 Expected release-candidate validation:
 
 ```text
-136 passed
+143 passed
 ```
 
 ## Roadmap

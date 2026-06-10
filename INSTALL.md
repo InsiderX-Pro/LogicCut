@@ -45,6 +45,14 @@ logiccut doctor --profile lite --json
 logiccut doctor --profile full --json
 ```
 
+翻译模块可以单独检查：
+
+```bash
+logiccut setup translation --profile asr --dry-run
+```
+
+`minimal` 只覆盖已有 transcript 的 Codex 文件翻译链；`asr` 会提示或安装 faster-whisper；`full` 会提示 pyannote 和可选 TTS 后端。模型和权重不包含在仓库里，来源见 [docs/local-translation.md](docs/local-translation.md)。
+
 ## Windows PowerShell
 
 ```powershell
@@ -115,6 +123,31 @@ logiccut run --project-dir output/theme-opener-sample/project --recipe theme-ope
 ```
 
 `LOGICCUT_ALLOW_TRANSCRIPT_FALLBACK=1` 只用于本地演示，真实视频应配置 ASR。
+
+本地视频翻译验收：
+
+```bash
+logiccut translate-video \
+  --backend logiccut-local \
+  --input output/theme-opener-sample/source.mp4 \
+  --output-dir output/translation-smoke \
+  --clip 60 \
+  --tgt-lang 中文 \
+  --allow-fallback-transcript
+```
+
+第一次运行会生成 `codex_translation_prompt.md` 和 `translated_segments.todo.json`。Codex 按 prompt 写入 `translated_segments.json` 后，再运行：
+
+```bash
+logiccut translate-video \
+  --backend logiccut-local \
+  --input output/theme-opener-sample/source.mp4 \
+  --output-dir output/translation-smoke \
+  --translation-json output/translation-smoke/translated_segments.json \
+  --clip 60 \
+  --tgt-lang 中文 \
+  --allow-fallback-transcript
+```
 
 ## 常见问题
 

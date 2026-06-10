@@ -39,7 +39,7 @@ Excluded:
 
 ```bash
 python3 -m pytest -q
-# 136 passed
+# 143 passed
 ```
 
 ```bash
@@ -70,6 +70,7 @@ docs/assets/demo total 1.4M
 ```bash
 test -f docs/assets/demo/README.md
 test -f examples/theme-opener-local-sample-plan.json
+test -f examples/public-video-translation-case.json
 # exit 0
 ```
 
@@ -163,6 +164,49 @@ duration=22.657000
 ```
 
 The first `theme-opener` run produced `assets/theme_opener/codex_prompt.md`; the second run rendered `renders/theme_opener/theme_opener.mp4` from the included reviewable plan. `LOGICCUT_ALLOW_TRANSCRIPT_FALLBACK=1` was used only to avoid third-party ASR downloads for the local demo.
+
+```bash
+python3 -m logiccut.cli sample \
+  --output output/translation-smoke/source.mp4 \
+  --duration 65
+
+python3 -m logiccut.cli translate-video \
+  --backend logiccut-local \
+  --input output/translation-smoke/source.mp4 \
+  --output-dir output/translation-smoke/translation \
+  --clip 60 \
+  --tgt-lang 中文 \
+  --allow-fallback-transcript
+
+# Codex reads codex_translation_prompt.md and writes translated_segments.json.
+
+python3 -m logiccut.cli translate-video \
+  --backend logiccut-local \
+  --input output/translation-smoke/source.mp4 \
+  --output-dir output/translation-smoke/translation \
+  --translation-json output/translation-smoke/translation/translated_segments.json \
+  --clip 60 \
+  --tgt-lang 中文 \
+  --allow-fallback-transcript
+
+ffprobe -v error \
+  -show_entries format=duration \
+  -show_entries stream=codec_type,width,height \
+  -of default=nw=1 \
+  output/translation-smoke/translation/output_video_subtitled.mp4
+```
+
+Result:
+
+```text
+codec_type=video
+width=1280
+height=720
+codec_type=audio
+duration=60.032000
+```
+
+The first local translation run produced `source_transcript.json`, `codex_translation_prompt.md` and `translated_segments.todo.json`; the second run rendered `output_video_subtitled.mp4` after a Codex-style `translated_segments.json` was written.
 
 ## Security Scan
 

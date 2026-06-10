@@ -28,13 +28,32 @@ logiccut download \
 
 ```bash
 logiccut translate-video \
+  --backend logiccut-local \
   --input output/my-case/download/source.mp4 \
   --output-dir output/my-case/translation \
   --tgt-lang 中文 \
-  --burn-subtitles
+  --clip 90
 ```
 
-完整翻译依赖 `video-translate-refine`、本地 ASR、pyannote 和 TTS 服务。轻量验收时可以先用 `--dry-run` 检查命令。
+第一次运行会生成 `codex_translation_prompt.md` 和 `translated_segments.todo.json`。你应该读取 prompt，写入：
+
+```text
+output/my-case/translation/translated_segments.json
+```
+
+然后再次运行：
+
+```bash
+logiccut translate-video \
+  --backend logiccut-local \
+  --input output/my-case/download/source.mp4 \
+  --output-dir output/my-case/translation \
+  --translation-json output/my-case/translation/translated_segments.json \
+  --tgt-lang 中文 \
+  --clip 90
+```
+
+`logiccut-local` 是内置最小翻译链，默认输出带中文字幕的视频。完整配音可切换到 `--backend video-translate-refine`，但那依赖本地 ASR、pyannote 和 TTS 服务。
 
 ### 主题高光开头
 

@@ -16,12 +16,16 @@ _FEATURES: list[dict[str, Any]] = [
     },
     {
         "id": "translate-video",
-        "version": "0.1",
+        "version": "0.4",
         "title": "Video translation",
-        "description": "Translate and dub a local video through the video-translate-refine backend.",
-        "commands": ["logiccut translate-video"],
+        "description": "Translate a local video with the built-in Codex-file subtitle pipeline or optional video-translate-refine dubbing backend.",
+        "commands": [
+            "logiccut setup translation",
+            "logiccut translate-video --backend logiccut-local",
+            "logiccut translate-video --backend video-translate-refine",
+        ],
         "inputs": ["local_video"],
-        "outputs": ["translated_video", "manifest.json", "optional_subtitled_video"],
+        "outputs": ["source_transcript.json", "codex_translation_prompt.md", "translated_subtitles.srt", "translated_video", "manifest.json"],
     },
     {
         "id": "semantic-highlights",
@@ -103,17 +107,30 @@ _GUIDES: dict[str, dict[str, Any]] = {
         "title": "把本地视频翻译成目标语言",
         "steps": [
             {
+                "title": "准备本机翻译依赖",
+                "commands": ["logiccut setup translation --profile asr --dry-run"],
+            },
+            {
                 "title": "确认视频已经在本地",
                 "commands": ["logiccut download --url \"<video-url>\" --output-dir output/my-case/download --prefix source"],
             },
             {
-                "title": "调用 video-translate-refine 后端",
+                "title": "第一次运行：生成 transcript 和 Codex 翻译提示",
                 "commands": [
-                    "logiccut translate-video --input output/my-case/download/source.mp4 --output-dir output/my-case/translation --tgt-lang 中文 --burn-subtitles"
+                    "logiccut translate-video --backend logiccut-local --input output/my-case/download/source.mp4 --output-dir output/my-case/translation --clip 90 --tgt-lang 中文"
+                ],
+            },
+            {
+                "title": "Codex 写入 translated_segments.json 后再次运行",
+                "commands": [
+                    "logiccut translate-video --backend logiccut-local --input output/my-case/download/source.mp4 --output-dir output/my-case/translation --translation-json output/my-case/translation/translated_segments.json --clip 90 --tgt-lang 中文"
                 ],
             },
         ],
-        "notes": ["视频翻译依赖本地 ASR、pyannote 和 TTS 服务，先运行 logiccut doctor。"],
+        "notes": [
+            "logiccut-local 不要求用户配置 LLM key；Codex 读取 codex_translation_prompt.md 后写 translated_segments.json。",
+            "完整配音仍可切换到 --backend video-translate-refine，并按文档配置 ASR / pyannote / TTS 服务。",
+        ],
     },
     "highlight": {
         "task": "highlight",

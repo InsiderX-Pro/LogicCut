@@ -4,36 +4,44 @@
       "repo_id": "video-translate-refine:v3",
       "role": "video_translation_pipeline",
       "source": "local project adapter",
+      "url": "user-provided or configured through LOGICCUT_VIDEO_TRANSLATE_REFINE_ROOT",
       "purpose": "Primary LogicCut video translation structure: local vocal separation, local ASR diarization, LLM translation, selectable TTS gateway, alignment, subtitles and mixdown"
     },
     {
       "repo_id": "FishAudio / Fish Speech S2",
       "role": "tts",
       "source": "local /tts service on 8321 or Fish Speech adapter on 8392",
+      "url": "https://github.com/fishaudio/fish-speech",
       "purpose": "Default TTS engine preset for LogicCut video translation"
     },
     {
       "repo_id": "IndexTeam/IndexTTS-2",
       "role": "tts",
       "source": "local IndexTTS2 gateway on 8304",
+      "url": "https://huggingface.co/IndexTeam/IndexTTS-2",
+      "github": "https://github.com/index-tts/index-tts",
       "purpose": "Chinese-focused TTS backend; supports the indextts2_decoupled ref strategy when enabled"
     },
     {
       "repo_id": "k2-fsa/OmniVoice",
       "role": "tts",
       "source": "OmniVoice Studio API through LogicCut /tts adapter on 8391",
+      "url": "https://huggingface.co/k2-fsa/OmniVoice",
+      "github": "https://github.com/k2-fsa/OmniVoice",
       "purpose": "Optional OmniVoice TTS backend for multilingual synthesis experiments"
     },
     {
       "repo_id": "Systran/faster-whisper-large-v3",
       "role": "asr",
       "source": "OmniVoice Studio",
+      "url": "https://huggingface.co/Systran/faster-whisper-large-v3",
       "purpose": "Default high-quality local ASR"
     },
     {
       "repo_id": "Systran/faster-whisper-base",
       "role": "asr",
       "source": "local smoke",
+      "url": "https://huggingface.co/Systran/faster-whisper-base",
       "purpose": "Fast local ASR preview and smoke tests"
     },
     {
@@ -65,6 +73,7 @@
       "repo_id": "pyannote/speaker-diarization-3.1",
       "role": "diarization",
       "source": "video-translate-refine pyannote_local backend",
+      "url": "https://huggingface.co/pyannote/speaker-diarization-3.1",
       "requires_env": "HF_TOKEN",
       "purpose": "Default local speaker diarization for LogicCut video translation"
     },
@@ -72,6 +81,7 @@
       "repo_id": "pyannote/segmentation-3.0",
       "role": "diarization",
       "source": "pyannote speaker-diarization-3.1 dependency",
+      "url": "https://huggingface.co/pyannote/segmentation-3.0",
       "requires_env": "HF_TOKEN",
       "purpose": "Segmentation model required by pyannote/speaker-diarization-3.1"
     },
@@ -79,6 +89,7 @@
       "repo_id": "pyannote/wespeaker-voxceleb-resnet34-LM",
       "role": "diarization",
       "source": "pyannote speaker-diarization-3.1 dependency",
+      "url": "https://huggingface.co/pyannote/wespeaker-voxceleb-resnet34-LM",
       "requires_env": "HF_TOKEN",
       "purpose": "Speaker embedding model required by pyannote/speaker-diarization-3.1"
     }

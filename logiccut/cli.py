@@ -15,6 +15,8 @@ from .media import ensure_sample_video
 from .merge import merge_videos
 from .reference_benchmark import default_reference_cases, write_benchmark_package
 from .recipes import init_project, run_recipe
+from .translation.pipeline import LocalTranslationConfig, run_local_translation
+from .translation.setup import run_translation_setup
 from .video_translate_refine import build_command, config_from_env, run_video_translate_refine
 from .workflow import execute_workflow_plan, parse_tasks, write_workflow_plan
 
@@ -31,6 +33,13 @@ def main(argv: list[str] | None = None) -> int:
     doctor = subparsers.add_parser("doctor", help="Check local LogicCut environment")
     doctor.add_argument("--profile", choices=["lite", "creator", "full"], default="lite")
     doctor.add_argument("--json", action="store_true", help="Print JSON output")
+
+    setup = subparsers.add_parser("setup", help="Install or inspect LogicCut component dependencies")
+    setup_subparsers = setup.add_subparsers(dest="setup_component", required=True)
+    setup_translation = setup_subparsers.add_parser("translation", help="Prepare the local translation pipeline")
+    setup_translation.add_argument("--profile", choices=["minimal", "asr", "full"], default="minimal")
+    setup_translation.add_argument("--install", action="store_true", help="Install selected Python dependencies")
+    setup_translation.add_argument("--dry-run", action="store_true", help="Only print the install/check plan")
 
     sample = subparsers.add_parser("sample", help="Generate a local sample video")
     sample.add_argument("--output", required=True, type=Path)
@@ -114,7 +123,8 @@ def main(argv: list[str] | None = None) -> int:
     create.add_argument("--comment-count", type=int, default=30)
     create.add_argument("--dry-run", action="store_true")
 
-    translate = subparsers.add_parser("translate-video", help="Translate and dub a video with video-translate-refine")
+    translate = subparsers.add_parser("translate-video", help="Translate a video with LogicCut local or external backend")
+    translate.add_argument("--backend", choices=["video-translate-refine", "logiccut-local"], default="video-translate-refine")
     translate.add_argument("--input", required=True, type=Path)
     translate.add_argument("--output-dir", required=True, type=Path)
     translate.add_argument("--clip", type=int, default=None, help="Only process the first N seconds")
@@ -122,6 +132,9 @@ def main(argv: list[str] | None = None) -> int:
     translate.add_argument("--src-lang", default=None, help="Source language override, e.g. en or zh-CN")
     translate.add_argument("--tgt-lang", default=None, help="Target language override, e.g. 中文 or English")
     translate.add_argument("--translate-backend", default=None, help="Translation backend, e.g. qwen35_plus or codex")
+    translate.add_argument("--transcript-json", type=Path, default=None, help="Use an existing transcript JSON for logiccut-local")
+    translate.add_argument("--translation-json", type=Path, default=None, help="Use Codex-authored translated segments JSON")
+    translate.add_argument("--allow-fallback-transcript", action="store_true", help="Allow synthetic transcript only for local demos")
     translate.add_argument("--subtitle-path", type=Path, default=None, help="Optional SRT path for subtitle-direct dubbing")
     translate.add_argument("--speaker-backend", default=None, help="Speaker backend override")
     translate.add_argument("--asr-text-refine-backend", default=None, help="ASR text refinement backend override")
@@ -143,7 +156,14 @@ def main(argv: list[str] | None = None) -> int:
     translate.add_argument("--ref-bgm-tts-ref-strategy", default=None, help="TTS ref strategy, e.g. indextts2_decoupled")
     translate.add_argument("--write-subtitles", dest="write_subtitles", action="store_true", default=True)
     translate.add_argument("--no-write-subtitles", dest="write_subtitles", action="store_false")
-    translate.add_argument("--burn-subtitles", action="store_true", help="Burn translated subtitles into a second video")
+    translate.add_argument(
+        "--burn-subtitles",
+        dest="burn_subtitles",
+        action="store_true",
+        default=None,
+        help="Burn translated subtitles into the output video",
+    )
+    translate.add_argument("--no-burn-subtitles", dest="burn_subtitles", action="store_false")
     translate.add_argument("--timeout", type=int, default=None, help="Overall timeout in seconds")
     translate.add_argument("--dry-run", action="store_true", help="Print command without running")
 
@@ -210,6 +230,13 @@ def main(argv: list[str] | None = None) -> int:
         if args.json:
             return _print(result)
         return _print(result)
+    if args.command == "setup":
+        return _print(
+            run_translation_setup(
+                profile=args.profile,
+                install=bool(args.install) and not bool(args.dry_run),
+            )
+        )
     if args.command == "sample":
         output = ensure_sample_video(args.output, duration=args.duration)
         return _print({"sample": str(output), "bytes": output.stat().st_size})
@@ -329,6 +356,34 @@ def main(argv: list[str] | None = None) -> int:
         execute_result = execute_workflow_plan(Path(plan_result["plan"]), dry_run=args.dry_run)
         return _print({"plan": plan_result, "execution": execute_result})
     if args.command == "translate-video":
+        if args.backend == "logiccut-local":
+            result = run_local_translation(
+                LocalTranslationConfig(
+                    input_video=args.input,
+                    output_dir=args.output_dir,
+                    target_language=args.tgt_lang or "中文",
+                    source_language=args.src_lang,
+                    clip_seconds=args.clip,
+                    transcript_json=args.transcript_json,
+                    translation_json=args.translation_json,
+                    allow_fallback_transcript=args.allow_fallback_transcript,
+                    burn_subtitles=True if args.burn_subtitles is None else bool(args.burn_subtitles),
+                )
+            )
+            return _print(
+                {
+                    "backend": "logiccut-local",
+                    "status": result.status,
+                    "output_dir": str(result.output_dir),
+                    "manifest": str(result.manifest_path),
+                    "prompt": str(result.prompt_path),
+                    "transcript": str(result.transcript_path),
+                    "todo_translation": str(result.todo_translation_path),
+                    "translation_json": str(result.translation_path) if result.translation_path else None,
+                    "subtitle": str(result.subtitle_path) if result.subtitle_path else None,
+                    "output_video": str(result.output_video) if result.output_video else None,
+                }
+            )
         config = config_from_env(
             video=args.input,
             output_dir=args.output_dir,
@@ -358,12 +413,12 @@ def main(argv: list[str] | None = None) -> int:
         if any(value is not None for value in overrides.values()):
             config = config.__class__(**{**config.__dict__, **{k: v for k, v in overrides.items() if v is not None}})
         config = config.__class__(
-            **{
-                **config.__dict__,
-                "ref_bgm_filter_enabled": bool(args.enable_ref_bgm_filter) or config.ref_bgm_filter_enabled,
-                "write_subtitles": bool(args.write_subtitles),
-                "burn_subtitles": bool(args.burn_subtitles),
-            }
+                **{
+                    **config.__dict__,
+                    "ref_bgm_filter_enabled": bool(args.enable_ref_bgm_filter) or config.ref_bgm_filter_enabled,
+                    "write_subtitles": bool(args.write_subtitles),
+                    "burn_subtitles": bool(args.burn_subtitles),
+                }
         )
         if args.dry_run:
             command, env = build_command(config)

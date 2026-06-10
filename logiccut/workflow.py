@@ -9,6 +9,7 @@ from .comments import create_comment_freeze_video, create_comment_narration_vide
 from .download import download_video
 from .merge import merge_videos
 from .recipes import init_project, run_recipe
+from .translation.pipeline import LocalTranslationConfig, run_local_translation
 from .video_translate_refine import config_from_env, run_video_translate_refine
 
 
@@ -132,7 +133,21 @@ def _build_steps(
                 "args": {"url": url, "output_dir": str(project_dir / "download"), "prefix": "source"},
             }
         )
-    if "translate" in tasks or "translate-video" in tasks:
+    if "translate-local" in tasks:
+        steps.append(
+            {
+                "id": "translate-local",
+                "command": "translate-video",
+                "args": {
+                    "backend": "logiccut-local",
+                    "input": source_ref,
+                    "output_dir": str(project_dir / "translation"),
+                    "tgt_lang": target_lang,
+                    "burn_subtitles": True,
+                },
+            }
+        )
+    elif "translate" in tasks or "translate-video" in tasks:
         steps.append(
             {
                 "id": "translate",
@@ -227,8 +242,10 @@ def _default_merge_inputs(project_dir: Path, tasks: list[str]) -> list[str]:
         inputs.append(str(project_dir / "comments" / "fast-cut-20s" / "comment_freeze_video.mp4"))
     if "comment-narration" in tasks:
         inputs.append(str(project_dir / "comments" / "narration" / "comment_narration_video.mp4"))
-    if "translate" in tasks or "translate-video" in tasks:
-        inputs.append(str(project_dir / "translation" / "final.mp4"))
+    if "translate-local" in tasks:
+        inputs.append(str(project_dir / "translation" / "output_video_subtitled.mp4"))
+    elif "translate" in tasks or "translate-video" in tasks:
+        inputs.append(str(project_dir / "translation" / "output_video.mp4"))
     return inputs
 
 
@@ -265,6 +282,26 @@ def _execute_step(project_dir: Path, step: dict[str, Any], context: dict[str, An
     if command == "run":
         return run_recipe(Path(args["project_dir"]), args["recipe"])
     if command == "translate-video":
+        if args.get("backend") == "logiccut-local":
+            result = run_local_translation(
+                LocalTranslationConfig(
+                    input_video=Path(args["input"]),
+                    output_dir=Path(args["output_dir"]),
+                    target_language=args.get("tgt_lang") or "中文",
+                    source_language=args.get("src_lang"),
+                    clip_seconds=args.get("clip"),
+                    transcript_json=_optional_path(args.get("transcript_json")),
+                    translation_json=_optional_path(args.get("translation_json")),
+                    allow_fallback_transcript=bool(args.get("allow_fallback_transcript", False)),
+                    burn_subtitles=bool(args.get("burn_subtitles", True)),
+                )
+            )
+            return {
+                "status": result.status,
+                "output_video": str(result.output_video) if result.output_video else None,
+                "manifest": str(result.manifest_path),
+                "prompt": str(result.prompt_path),
+            }
         result = run_video_translate_refine(
             config_from_env(
                 video=Path(args["input"]),

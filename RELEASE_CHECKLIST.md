@@ -36,13 +36,17 @@ Use this checklist before publishing a public LogicCut release repository.
 - [ ] `test -f docs/assets/demo/theme-opener-demo.gif`
 - [ ] `test -f docs/assets/demo/README.md`
 - [ ] `test -f examples/theme-opener-local-sample-plan.json`
+- [ ] `test -f examples/public-video-translation-case.json`
 - [ ] `logiccut capabilities`
 - [ ] `logiccut guide --task remix`
+- [ ] `logiccut guide --task translate`
+- [ ] `logiccut setup translation --profile minimal --dry-run`
 - [ ] `logiccut doctor --profile lite --json`
 - [ ] `logiccut plan ...`
 - [ ] `logiccut execute --dry-run ...`
 - [ ] `logiccut merge ...`
 - [ ] Local theme opener demo renders `output/theme-opener-sample/project/renders/theme_opener/theme_opener.mp4`
+- [ ] Local translation smoke renders `output/translation-smoke/translation/output_video_subtitled.mp4`
 
 ## Release Notes
 

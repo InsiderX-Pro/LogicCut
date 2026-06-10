@@ -1,0 +1,36 @@
+{
+  "id": "public-video-translation-90s",
+  "version": "0.4",
+  "purpose": "Validate the built-in Codex-driven local translation pipeline on a public video clip.",
+  "source": {
+    "url": "https://www.youtube.com/watch?v=96jN2OCOfLs",
+    "clip_seconds": 90,
+    "target_language": "中文",
+    "note": "Use only videos you own, are authorized to process, or are legally permitted to transform."
+  },
+  "commands": [
+    "logiccut setup translation --profile asr --dry-run",
+    "logiccut setup translation --profile asr --install",
+    "logiccut download --url \"https://www.youtube.com/watch?v=96jN2OCOfLs\" --output-dir output/public-translation/download --prefix source",
+    "logiccut translate-video --backend logiccut-local --input output/public-translation/download/source.mp4 --output-dir output/public-translation/translation --clip 90 --tgt-lang 中文",
+    "Codex reads output/public-translation/translation/codex_translation_prompt.md and writes output/public-translation/translation/translated_segments.json",
+    "logiccut translate-video --backend logiccut-local --input output/public-translation/download/source.mp4 --output-dir output/public-translation/translation --translation-json output/public-translation/translation/translated_segments.json --clip 90 --tgt-lang 中文",
+    "ffprobe -v error -show_entries format=duration -show_entries stream=codec_type,width,height -of default=nw=1 output/public-translation/translation/output_video_subtitled.mp4"
+  ],
+  "expected_outputs": [
+    "output/public-translation/translation/source_transcript.json",
+    "output/public-translation/translation/codex_translation_prompt.md",
+    "output/public-translation/translation/translated_segments.json",
+    "output/public-translation/translation/translated_subtitles.srt",
+    "output/public-translation/translation/output_video_subtitled.mp4",
+    "output/public-translation/translation/translation_report.html",
+    "output/public-translation/translation/translation_manifest.json"
+  ],
+  "acceptance_checks": [
+    "The final video has one video stream and one audio stream.",
+    "The duration is close to 90 seconds.",
+    "Chinese subtitles are burned into the video.",
+    "translation_manifest.json has backend=logiccut-local and status=ok.",
+    "No API key, cookies, model weights, or generated videos are committed."
+  ]
+}

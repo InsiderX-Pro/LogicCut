@@ -9,6 +9,7 @@ This directory contains lightweight release examples. They are intentionally sma
 | `v03-lite-remix-plan.json` | Example plan for link → comments → 20s comment fast-cut → merge. |
 | `theme-opener-plan.example.json` | Example Codex-authored theme opener plan shape. |
 | `theme-opener-local-sample-plan.json` | Runnable theme opener plan for the README local sample demo. |
+| `public-video-translation-case.json` | 90s public-video translation acceptance case for the built-in local pipeline. |
 
 ## How To Use
 

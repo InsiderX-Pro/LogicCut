@@ -12,6 +12,7 @@ logiccut capabilities
 
 - `download`
 - `translate-video`
+- `setup translation`
 - `theme-opener`
 - `comments`
 - `comment-freeze`
@@ -40,7 +41,58 @@ logiccut guide --task comments
 logiccut guide --task remix
 ```
 
-## 4. 本地二创开头 Demo
+## 4. 本地视频翻译
+
+先检查翻译依赖计划：
+
+```bash
+logiccut setup translation --profile asr --dry-run
+```
+
+真实视频需要 ASR。Codex 可以执行 `logiccut setup translation --profile asr --install`，或使用用户提供的 `--transcript-json`。
+
+第一次运行生成 transcript 和 Codex prompt：
+
+```bash
+logiccut translate-video \
+  --backend logiccut-local \
+  --input output/my-case/source.mp4 \
+  --output-dir output/my-case/translation \
+  --clip 90 \
+  --tgt-lang 中文
+```
+
+然后读取：
+
+```text
+output/my-case/translation/codex_translation_prompt.md
+```
+
+写入：
+
+```text
+output/my-case/translation/translated_segments.json
+```
+
+再次运行渲染：
+
+```bash
+logiccut translate-video \
+  --backend logiccut-local \
+  --input output/my-case/source.mp4 \
+  --output-dir output/my-case/translation \
+  --translation-json output/my-case/translation/translated_segments.json \
+  --clip 90 \
+  --tgt-lang 中文
+```
+
+公开视频验收 case 见：
+
+```text
+examples/public-video-translation-case.json
+```
+
+## 5. 本地二创开头 Demo
 
 这条路径不依赖视频平台、cookies、API key 或第三方 ASR 权重，用于验证 LogicCut 的「可审查计划 → 渲染二创开头」流程。
 
@@ -73,7 +125,7 @@ logiccut run --project-dir output/theme-opener-sample/project --recipe theme-ope
 
 真实视频不要使用 fallback transcript，应配置真实 ASR 或第三方 transcriber。
 
-## 5. 从视频链接生成二创计划
+## 6. 从视频链接生成二创计划
 
 ```bash
 logiccut plan \
@@ -93,7 +145,7 @@ output/v03-demo/logiccut_plan.json
 
 Codex 应该先审查这个 JSON，再执行。
 
-## 6. 执行计划
+## 7. 执行计划
 
 先 dry-run：
 
@@ -107,7 +159,7 @@ logiccut execute --plan output/v03-demo/logiccut_plan.json --dry-run
 logiccut execute --plan output/v03-demo/logiccut_plan.json
 ```
 
-## 7. 合并多段视频
+## 8. 合并多段视频
 
 ```bash
 logiccut merge \
@@ -115,7 +167,7 @@ logiccut merge \
   --output output/v03-demo/final/final_remix.mp4
 ```
 
-## 8. 验证输出
+## 9. 验证输出
 
 ```bash
 ffprobe -v error \
@@ -138,5 +190,6 @@ ffprobe -v error \
 
 - 不要直接提交 `.env.local`、cookies、token、模型权重或生成视频。
 - 遇到需要大模型判断的高光选段时，Codex 自己阅读 transcript 和 prompt 后写 plan。
-- 如果视频翻译后端不可用，先用 `--dry-run` 固定命令和参数，再提示用户需要启动对应服务。
+- 视频翻译优先使用 `--backend logiccut-local`，Codex 自己阅读 prompt 并写 `translated_segments.json`。
+- 如果需要配音，再切换到外部 `video-translate-refine` 或 TTS 服务，并先用 `--dry-run` 固定命令和参数。
 - 如果评论截图被平台限制，说明需要 cookies，而不是假装已抓全。

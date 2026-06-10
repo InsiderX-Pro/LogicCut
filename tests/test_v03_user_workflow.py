@@ -112,6 +112,34 @@ class V03UserWorkflowTest(unittest.TestCase):
             self.assertEqual(["download", "comments", "comment-freeze", "merge"], plan["tasks"])
             self.assertTrue(any(step["command"] == "comments" for step in plan["steps"]))
 
+    def test_plan_supports_logiccut_local_translation_task(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp) / "case"
+
+            with patch("builtins.print") as print_mock:
+                exit_code = main(
+                    [
+                        "plan",
+                        "--input",
+                        str(Path(tmp) / "source.mp4"),
+                        "--project-dir",
+                        str(output_dir),
+                        "--tasks",
+                        "translate-local",
+                        "--target-lang",
+                        "中文",
+                    ]
+                )
+
+            self.assertEqual(0, exit_code)
+            payload = json.loads(print_mock.call_args.args[0])
+            plan = json.loads(Path(payload["plan"]).read_text(encoding="utf-8"))
+            step = plan["steps"][0]
+            self.assertEqual("translate-local", step["id"])
+            self.assertEqual("translate-video", step["command"])
+            self.assertEqual("logiccut-local", step["args"]["backend"])
+            self.assertTrue(step["args"]["burn_subtitles"])
+
     def test_execute_dry_run_prints_plan_steps_without_side_effects(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
