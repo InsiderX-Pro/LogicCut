@@ -16,7 +16,7 @@ Recommended prompt:
 请安装并使用这个项目：https://github.com/piedpiperG/LogicCut
 
 先阅读 README.md、AGENTS.md、INSTALL.md 和 docs/codex-quickstart.md。
-然后在本机配置环境，不要提交任何 key、cookies、模型权重或生成视频。
+然后执行标准安装，不要默认安装 lite 版本；不要提交任何 key、cookies、模型权重或生成视频。
 
 我要输入一个视频链接或本地视频，请帮我完成：
 1. 下载或导入视频；
@@ -24,6 +24,13 @@ Recommended prompt:
 3. 按主题剪一个 15-30 秒高光开头；
 4. 可选抓取评论区并做评论视频；
 5. 最后把多段视频合并为一个二创成片。
+
+如果我的任务需要额外模型，请先给我推荐选择和原因：
+- 翻译到中文、希望轻量本地跑：优先使用 rgad-tts；
+- 多语言配音：推荐 OmniVoice；
+- 中文音质优先：推荐 IndexTTS2；
+- 已有 FishAudio / Fish Speech S2 服务：可接 fishaudio 或 fish-speech-s2；
+- 多说话人视频：再安装 pyannote。
 ```
 
 Codex is the reasoning and orchestration layer; LogicCut provides the reproducible CLI, local model stack, media pipeline, and project structure. The repository does not include model weights. Codex should download or verify external models from the documented GitHub / Hugging Face sources on the user's machine.
@@ -131,7 +138,7 @@ The long-term story is simple: **teach the agent a video repurposing logic once,
 
 ## Current Limitations
 
-LogicCut is currently in public preview. The recommended first-time path is local video input, comment fast-cut, and video merge.
+LogicCut is currently in public preview. The recommended first-time path is the standard install, local video input, comment fast-cut, translation setup check, and video merge. `lite` is kept only for debugging very small smoke tests.
 
 Some workflows depend on external services or platform availability:
 
@@ -153,9 +160,9 @@ Linux / macOS:
 git clone https://github.com/piedpiperG/LogicCut.git
 cd LogicCut
 
-./scripts/install.sh --profile lite
+./scripts/install.sh
 source .venv/bin/activate
-logiccut doctor --profile lite --json
+logiccut doctor --profile standard --json
 ```
 
 Windows PowerShell:
@@ -164,9 +171,9 @@ Windows PowerShell:
 git clone https://github.com/piedpiperG/LogicCut.git
 cd LogicCut
 
-powershell -ExecutionPolicy Bypass -File scripts/install.ps1 -Profile lite
+powershell -ExecutionPolicy Bypass -File scripts/install.ps1
 .venv\Scripts\Activate.ps1
-python -m logiccut.cli doctor --profile lite --json
+python -m logiccut.cli doctor --profile standard --json
 ```
 
 ### 2. Path A: Smoke Test
@@ -319,7 +326,7 @@ logiccut merge \
 LogicCut provides a CLI-native workflow that can be used manually or controlled by coding agents such as Codex, Claude Code, or other agentic development tools. An agent should read [AGENTS.md](AGENTS.md), then follow this order:
 
 1. `logiccut capabilities`
-2. `logiccut doctor --profile lite --json`
+2. `logiccut doctor --profile standard --json`
 3. `logiccut guide --task remix`
 4. `logiccut plan ...`
 5. Review and edit `logiccut_plan.json` if needed.
@@ -382,11 +389,11 @@ When using comment screenshots in public videos, consider blurring usernames, av
 
 | Profile | Use Case | Command |
 | --- | --- | --- |
-| `lite` | Download, comments, screenshots, merge | `./scripts/install.sh --profile lite` |
-| `creator` | `lite` + extra creator tooling | `./scripts/install.sh --profile creator` |
-| `full` | Translation and local model services | `./scripts/install.sh --profile full` |
+| `standard` | Recommended default install: download, comments, screenshots, merge, OpenCC, creator tooling | `./scripts/install.sh` |
+| `full` | Linux / WSL2 model-heavy setup after Codex explains the task-specific model choices | `./scripts/install.sh --profile full` |
+| `lite` | Debug-only smoke profile; not recommended for normal users | `./scripts/install.sh --profile lite` |
 
-Full profile depends on external model services and is best tested on Linux or WSL2 with GPU support.
+Standard install does not vendor or download model weights. For concrete tasks, Codex should recommend the matching model stack first, then install only the needed optional model service.
 
 ## Known Working Environment
 
@@ -398,7 +405,7 @@ The current release candidate has been validated on:
 | Python | 3.10+ |
 | FFmpeg / FFprobe | Required for every media workflow. |
 | Browser automation | Playwright is used for real comment-section screenshots. |
-| Lite profile | Download, comments, screenshot capture, sample generation, merge, local theme-opener demo. |
+| Standard profile | Download, comments, screenshot capture, sample generation, merge, OpenCC, local theme-opener demo. |
 | Full profile | Translation and TTS adapters require additional model services and are best treated as deployment-specific. |
 
 ## Development
@@ -412,7 +419,7 @@ python3 -m py_compile scripts/bootstrap.py logiccut/*.py
 Expected release-candidate validation:
 
 ```text
-148 passed
+153 passed
 ```
 
 ## Roadmap

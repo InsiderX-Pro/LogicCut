@@ -21,11 +21,19 @@ LITE_PACKAGES = [
 CREATOR_PACKAGES = LITE_PACKAGES + [
     "beautifulsoup4",
 ]
+DEFAULT_PROFILE = "standard"
+VALID_PROFILES = ["lite", "standard", "creator", "full"]
+
+
+def packages_for_profile(profile: str) -> list[str]:
+    if profile in {"standard", "creator", "full"}:
+        return CREATOR_PACKAGES
+    return LITE_PACKAGES
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Install LogicCut local dependencies")
-    parser.add_argument("--profile", choices=["lite", "creator", "full"], default="lite")
+    parser.add_argument("--profile", choices=VALID_PROFILES, default=DEFAULT_PROFILE)
     parser.add_argument("--venv", type=Path, default=Path(".venv"))
     parser.add_argument("--skip-playwright", action="store_true")
     args = parser.parse_args()
@@ -36,7 +44,7 @@ def main() -> int:
     python = _venv_python(venv_dir)
     installer = _installer(python)
     _install(installer, ["--upgrade", "pip", "wheel"])
-    packages = CREATOR_PACKAGES if args.profile in {"creator", "full"} else LITE_PACKAGES
+    packages = packages_for_profile(args.profile)
     _install(installer, packages)
     _write_command_shims(root, venv_dir)
     if not args.skip_playwright:

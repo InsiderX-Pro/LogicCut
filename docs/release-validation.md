@@ -39,7 +39,7 @@ Excluded:
 
 ```bash
 python3 -m pytest -q
-# 148 passed
+# 153 passed
 ```
 
 ```bash
@@ -75,12 +75,12 @@ test -f examples/public-video-translation-case.json
 ```
 
 ```bash
-./scripts/install.sh --profile lite
-# installed lite profile into .venv
+./scripts/install.sh
+# installed standard profile into .venv
 ```
 
 ```bash
-./scripts/logiccut.sh doctor --profile lite --json
+./scripts/logiccut.sh doctor --profile standard --json
 # summary: {'ok': True, 'missing': [], 'failed': []}
 ```
 

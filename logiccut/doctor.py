@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any
 
 
-def run_doctor(*, profile: str = "lite", repo_root: Path | None = None) -> dict[str, Any]:
+def run_doctor(*, profile: str = "standard", repo_root: Path | None = None) -> dict[str, Any]:
     root = repo_root or Path(__file__).resolve().parents[1]
     checks: dict[str, dict[str, Any]] = {
         "python": _python_check(),
@@ -21,7 +21,7 @@ def run_doctor(*, profile: str = "lite", repo_root: Path | None = None) -> dict[
         "playwright": _playwright_check(repo_root=root),
         "logiccut_package": {"status": "ok", "path": str(root / "logiccut")},
     }
-    if profile in {"creator", "full"}:
+    if profile in {"standard", "creator", "full"}:
         checks["opencc"] = _python_module_check("opencc")
     if profile == "full":
         checks["torch"] = _python_module_check("torch")
@@ -135,6 +135,6 @@ def _next_steps(profile: str, missing: list[str], failed: list[str]) -> list[str
         steps.append("Install FFmpeg and ensure both `ffmpeg` and `ffprobe` are on PATH.")
     if "yt-dlp" in missing:
         steps.append("Install yt-dlp with `python -m pip install yt-dlp` or through the setup script.")
-    if "playwright" in missing and profile in {"lite", "creator", "full"}:
+    if "playwright" in missing and profile in {"lite", "standard", "creator", "full"}:
         steps.append("Install Playwright browsers with `python -m playwright install chromium`.")
     return steps

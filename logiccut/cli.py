@@ -31,13 +31,13 @@ def main(argv: list[str] | None = None) -> int:
     guide.add_argument("--task", required=True, choices=supported_guide_tasks())
 
     doctor = subparsers.add_parser("doctor", help="Check local LogicCut environment")
-    doctor.add_argument("--profile", choices=["lite", "creator", "full"], default="lite")
+    doctor.add_argument("--profile", choices=["lite", "standard", "creator", "full"], default="standard")
     doctor.add_argument("--json", action="store_true", help="Print JSON output")
 
     setup = subparsers.add_parser("setup", help="Install or inspect LogicCut component dependencies")
     setup_subparsers = setup.add_subparsers(dest="setup_component", required=True)
     setup_translation = setup_subparsers.add_parser("translation", help="Prepare the local translation pipeline")
-    setup_translation.add_argument("--profile", choices=["minimal", "asr", "full"], default="minimal")
+    setup_translation.add_argument("--profile", choices=["minimal", "asr", "full"], default="asr")
     setup_translation.add_argument("--install", action="store_true", help="Install selected Python dependencies")
     setup_translation.add_argument("--dry-run", action="store_true", help="Only print the install/check plan")
 

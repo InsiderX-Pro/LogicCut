@@ -172,6 +172,15 @@ class CliTest(unittest.TestCase):
         self.assertIn('"component": "translation"', payload)
         self.assertIn("logiccut translate-video --backend logiccut-local", payload)
 
+    def test_setup_translation_defaults_to_asr_profile(self) -> None:
+        with patch("builtins.print") as print_mock:
+            exit_code = main(["setup", "translation", "--dry-run"])
+
+        self.assertEqual(0, exit_code)
+        payload = print_mock.call_args.args[0]
+        self.assertIn('"profile": "asr"', payload)
+        self.assertIn("faster-whisper", payload)
+
     def test_run_accepts_guided_highlights_recipe(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             project = Path(tmp) / "project"

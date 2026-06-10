@@ -151,6 +151,73 @@ _TTS_BACKENDS: list[dict[str, str]] = [
 ]
 
 
+_INSTALL_GUIDANCE: dict[str, Any] = {
+    "default_profile": "standard",
+    "profiles": {
+        "standard": {
+            "command": "./scripts/install.sh",
+            "description": "Default first install. Installs the useful creator baseline: CLI, yt-dlp, Playwright, OpenCC, comments, screenshots, merge, and project tooling.",
+        },
+        "full": {
+            "command": "./scripts/install.sh --profile full",
+            "description": "Linux / WSL2 model-heavy profile. Use after Codex explains which local model services are needed for the requested workflow.",
+        },
+        "lite": {
+            "command": "./scripts/install.sh --profile lite",
+            "description": "Debug-only smoke profile. Not recommended for normal users because it skips creator defaults.",
+        },
+    },
+    "decision_rule": (
+        "Install the standard profile first. When the user requests a concrete video task, "
+        "Codex should recommend the matching ASR/TTS/model option, explain the tradeoff, then install only that optional model stack."
+    ),
+    "task_recommendations": {
+        "zh_translation_lightweight": {
+            "recommended_tts": "rgad-tts",
+            "reason": "Default lightweight foreign-language-to-Chinese dubbing path on local/small machines.",
+            "commands": [
+                "logiccut setup translation --profile asr --dry-run",
+                "logiccut setup translation --profile asr --install",
+            ],
+            "sources": [
+                "https://github.com/piedpiperG/rgad-crosslingual-tts",
+                "https://huggingface.co/isabeth/rgad-crosslingual-tts",
+            ],
+        },
+        "multilingual_dubbing": {
+            "recommended_tts": "omnivoice",
+            "reason": "Use OmniVoice when the user asks for multilingual dubbing or cross-language experiments beyond lightweight Chinese output.",
+            "commands": ["./scripts/clone_repos.sh", "./scripts/run_omnivoice_tts_adapter.sh"],
+            "sources": [
+                "https://github.com/k2-fsa/OmniVoice",
+                "https://github.com/debpalash/OmniVoice-Studio",
+                "https://huggingface.co/k2-fsa/OmniVoice",
+            ],
+        },
+        "zh_quality_dubbing": {
+            "recommended_tts": "indextts2",
+            "reason": "Use IndexTTS2 when the user prioritizes Chinese voice quality, reference voice, or emotion control over lightweight setup.",
+            "sources": [
+                "https://github.com/index-tts/index-tts",
+                "https://huggingface.co/IndexTeam/IndexTTS-2",
+            ],
+        },
+        "fish_speech_s2": {
+            "recommended_tts": "fishaudio or fish-speech-s2",
+            "reason": "Use FishAudio S2 / Fish Speech when the user already has that local service or wants the Fish Speech native adapter path.",
+            "commands": ["./scripts/run_fish_speech_adapter.sh"],
+            "sources": ["https://github.com/fishaudio/fish-speech"],
+        },
+        "multi_speaker_video": {
+            "recommended_model": "pyannote/speaker-diarization-3.1",
+            "reason": "Install pyannote only when multi-speaker diarization is needed. It requires Hugging Face access approval and HF_TOKEN.",
+            "commands": ["logiccut setup translation --profile full --dry-run"],
+            "sources": ["https://huggingface.co/pyannote/speaker-diarization-3.1"],
+        },
+    },
+}
+
+
 _GUIDES: dict[str, dict[str, Any]] = {
     "download": {
         "task": "download",
@@ -295,6 +362,7 @@ def build_capabilities() -> dict[str, Any]:
         "name": "LogicCut",
         "version": "0.3",
         "usage_modes": ["codex", "cli", "local-first"],
+        "install": deepcopy(_INSTALL_GUIDANCE),
         "features": deepcopy(_FEATURES),
         "translation_default": "local-first",
         "local_model_stack": deepcopy(_LOCAL_MODEL_STACK),

@@ -10,10 +10,10 @@
 请安装并使用这个项目：https://github.com/piedpiperG/LogicCut
 
 先阅读 README.md、AGENTS.md、INSTALL.md 和 docs/codex-quickstart.md。
-然后在本机配置环境，不要提交任何 key、cookies、模型权重或生成视频。
+然后在本机执行标准安装，不要默认安装 lite 版本；不要提交任何 key、cookies、模型权重或生成视频。
 
 我要输入一个视频链接或本地视频，请帮我完成视频下载、视频翻译、高光剪辑、评论视频和最终合并。
-翻译模块默认使用本地部署模型和服务；需要 TTS 时优先尝试 rgad-tts，也可以按需要切换 FishAudio S2、IndexTTS2 或 OmniVoice。
+翻译模块默认使用本地部署模型和服务。需要额外模型时，请先推荐选择和原因：轻量翻译到中文优先 rgad-tts，多语言配音用 OmniVoice，中文音质优先用 IndexTTS2，已有 FishAudio / Fish Speech S2 服务时复用 fishaudio 或 fish-speech-s2，多说话人视频再安装 pyannote。
 ```
 
 Codex 的职责是理解用户目标、选择工作流、安装/检查依赖、生成计划、运行命令并验证输出。LogicCut 的职责是提供稳定 CLI、模型来源清单、媒体处理能力和可复现项目结构。
@@ -38,10 +38,10 @@ logiccut capabilities
 ## 2. 检查环境
 
 ```bash
-logiccut doctor --profile lite --json
+logiccut doctor --profile standard --json
 ```
 
-如果要跑完整翻译：
+如果用户任务需要完整翻译、配音或多说话人识别：
 
 ```bash
 logiccut doctor --profile full --json

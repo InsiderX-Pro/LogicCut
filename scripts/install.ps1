@@ -1,6 +1,6 @@
 param(
-  [ValidateSet("lite", "creator", "full")]
-  [string]$Profile = "lite"
+  [ValidateSet("lite", "standard", "creator", "full")]
+  [string]$Profile = "standard"
 )
 
 $ErrorActionPreference = "Stop"

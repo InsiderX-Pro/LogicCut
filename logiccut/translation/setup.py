@@ -28,7 +28,7 @@ PYANNOTE_PACKAGES = [
 ]
 
 
-def build_translation_setup_plan(*, profile: str = "minimal", install: bool = False) -> dict[str, Any]:
+def build_translation_setup_plan(*, profile: str = "asr", install: bool = False) -> dict[str, Any]:
     if profile not in {"minimal", "asr", "full"}:
         raise ValueError("translation setup profile must be minimal, asr, or full")
     packages = list(MINIMAL_PACKAGES)
@@ -86,7 +86,7 @@ def build_translation_setup_plan(*, profile: str = "minimal", install: bool = Fa
     }
 
 
-def run_translation_setup(*, profile: str = "minimal", install: bool = False, runner=subprocess.run) -> dict[str, Any]:
+def run_translation_setup(*, profile: str = "asr", install: bool = False, runner=subprocess.run) -> dict[str, Any]:
     plan = build_translation_setup_plan(profile=profile, install=install)
     if not install:
         return plan
